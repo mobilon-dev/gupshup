@@ -1,6 +1,9 @@
 # @mobilon-dev/gupshup
 
-Gupshup API client
+GupshupAPIclient - клиент для работы с WABA
+
+GupshupPartnerApiClient - клиента для работы с партнерским API
+
 
 [Gupshup.io](https://gupshup.io)
 

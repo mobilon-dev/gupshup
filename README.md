@@ -6,7 +6,9 @@ Gupshup API client
 
 [Gupshup group in Telegram](https://t.me/ru_gupshup)
 
-[Gupshup Whatsapp API docs](https://www.gupshup.io/developer/docs/bot-platform/guide/whatsapp-api-documentation)
+[Gupshup API](https://docs.gupshup.io/reference/msg)
+
+[Gupshup Partner API](https://www.gupshup.io/docs/partner/)
 
 
 `````javascript

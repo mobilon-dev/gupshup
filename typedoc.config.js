@@ -1,4 +1,4 @@
-const gitRepoUrl = 'https://github.com/antirek/gupshup-api-client';
+const gitRepoUrl = 'https://github.com/mobilon-dev/gupshup';
 
 module.exports = {
   entryPoints: [

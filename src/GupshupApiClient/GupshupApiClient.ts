@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
+// import {stringify} from 'qs';
 
 import type {
   GupshupAPIClientConfig, 
@@ -25,19 +26,20 @@ export class GupshupAPIClient {
     optInUsersList: string;
   };
 
-  config: { 
-    headers: { 
-      'Cache-Control': string; 
-      'Content-Type': string; 
-      apiKey: string; 
-    };
-  };
-
   constructor ({API_KEY, APP_NAME, SOURCE_MOBILE_NUMBER, APP_ID, debug}: GupshupAPIClientConfig) {
     this.API_KEY = API_KEY;
     this.APP_NAME = APP_NAME;
     this.SOURCE_MOBILE_NUMBER = SOURCE_MOBILE_NUMBER;
     this.APP_ID = APP_ID;
+
+    this.axios = axios.create({
+      baseURL: 'https://api.gupshup.io',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        apiKey: this.API_KEY,
+      },
+    });
 
     this.url = {
       getTemplatesList: `/sm/api/v1/template/list/${APP_NAME}`,
@@ -50,22 +52,7 @@ export class GupshupAPIClient {
       // markRead: `/wa/app/${APP_ID}/msg/{msgId}/read`,
     };
 
-    this.axios = axios.create({
-      baseURL: `https://api.gupshup.io`,
-      headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        apiKey: this.API_KEY,
-      },
-    });
 
-    this.config = {
-      headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        apiKey: this.API_KEY
-      }
-    };
 
     if (debug) {
       const config = {
@@ -102,7 +89,9 @@ export class GupshupAPIClient {
    */
   getTemplatesList = async () => await this.axios.get(this.url.getTemplatesList);
 
-  getWalletBalance = async () => await this.axios.get(this.url.getWalletBalance);
+  getWalletBalance = async () => {
+    return await this.axios.get(this.url.getWalletBalance);
+  }
 
   getOptInUsersList = async () => await this.axios.get(this.url.optInUsersList);
 
@@ -228,7 +217,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
       disablePreview: false
     });
-
+    console.log('text', params);
     return await this.axios.post(this.url.sendTextMessage, params);
   };
 

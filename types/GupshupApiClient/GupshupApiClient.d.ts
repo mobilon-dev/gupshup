@@ -1,9 +1,11 @@
+import { AxiosInstance } from 'axios';
 import type { GupshupAPIClientConfig, ContactCard, ListMessage, QuickReplyMessage } from './types';
 export declare class GupshupAPIClient {
     API_KEY: string;
     APP_NAME: string;
     SOURCE_MOBILE_NUMBER: string;
     APP_ID?: string;
+    axios: AxiosInstance;
     url: {
         getTemplatesList: string;
         optInUser: string;
@@ -12,13 +14,6 @@ export declare class GupshupAPIClient {
         sendTemplateMessage: string;
         getWalletBalance: string;
         optInUsersList: string;
-    };
-    config: {
-        headers: {
-            'Cache-Control': string;
-            'Content-Type': string;
-            apiKey: string;
-        };
     };
     constructor({ API_KEY, APP_NAME, SOURCE_MOBILE_NUMBER, APP_ID, debug }: GupshupAPIClientConfig);
     /**

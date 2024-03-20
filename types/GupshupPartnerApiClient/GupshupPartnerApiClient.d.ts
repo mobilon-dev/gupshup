@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Template, TemplateCreateData, GupshupPartnerApiClientConfig } from './types';
 declare class GupshupPartnerApiClient {
     axios: AxiosInstance;
-    constructor({ appId, appToken }: GupshupPartnerApiClientConfig);
+    constructor({ appId, appToken, debug }: GupshupPartnerApiClientConfig);
     getTemplates(): Promise<Template[]>;
     postTemplate(templateData: TemplateCreateData): Promise<any>;
     delTemplate(elementName: string): Promise<any>;

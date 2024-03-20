@@ -1,7 +1,7 @@
 {
   "name": "@mobilon-dev/gupshup",
   "description": "Gupshup API client",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "dist/index",
   "types": "types/index.d.ts",
   "dependencies": {
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsc & npm run types:build",
     "lint-fix": "eslint --fix . --ext .ts",
     "docs:build": "npx typedoc",
     "docs:view": "http-server ./docs/",

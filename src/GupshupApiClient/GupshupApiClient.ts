@@ -59,7 +59,7 @@ export class GupshupAPIClient {
 
     if (debug) {
       const config = {
-        prefixText: 'AmoApiClient',
+        prefixText: 'GupshupApiClient',
         // status: true,
         headers: false,
         params: true,

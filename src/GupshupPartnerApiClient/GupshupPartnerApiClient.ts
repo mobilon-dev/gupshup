@@ -1,4 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
+import { requestLogger, responseLogger } from 'axios-logger';
 import {stringify} from 'qs';
 
 import {
@@ -7,12 +8,10 @@ import {
   GupshupPartnerApiClientConfig,
 } from './types';
 
-
-
 class GupshupPartnerApiClient {
   axios: AxiosInstance;
 
-  constructor({appId, appToken}:GupshupPartnerApiClientConfig) {
+  constructor({appId, appToken, debug}:GupshupPartnerApiClientConfig) {
     this.axios = axios.create({
       baseURL: `https://partner.gupshup.io/partner/app/${appId}/`,
       headers: {
@@ -20,6 +19,21 @@ class GupshupPartnerApiClient {
         token: appToken,
       },
     });
+
+    if (debug) {
+      const config = {
+        prefixText: 'GupshupPartnerApiClient',
+        // status: true,
+        headers: false,
+        params: true,
+      };
+      this.axios.interceptors.request.use((request) => {
+        return requestLogger(request, config);
+      });
+      this.axios.interceptors.response.use((response) => {
+        return responseLogger(response, config);
+      });
+    }
   }
 
   async getTemplates():Promise<Template[]> {

@@ -9,9 +9,15 @@ import {
 } from './types';
 
 class GupshupPartnerApiClient {
+  portalUrl: string;
+  appId: string;
+  appToken: string;
   axios: AxiosInstance;
 
-  constructor({appId, appToken, debug}:GupshupPartnerApiClientConfig) {
+  constructor({appId, appToken, debug}: GupshupPartnerApiClientConfig) {
+    this.portalUrl = 'https://partner.gupshup.io';
+    this.appId = appId;
+    this.appToken = appToken;
     this.axios = axios.create({
       baseURL: `https://partner.gupshup.io/partner/app/${appId}/`,
       headers: {
@@ -36,12 +42,12 @@ class GupshupPartnerApiClient {
     }
   }
 
-  async getTemplates():Promise<Template[]> {
+  async getTemplates(): Promise<Template[]> {
     const response = await this.axios.get('/templates');
     return response.data;
   }
 
-  async postTemplate(templateData:TemplateCreateData) {
+  async postTemplate(templateData: TemplateCreateData) {
     const response = await this.axios.post('/templates', stringify(templateData));
     return response.data;
   }
@@ -105,12 +111,33 @@ class GupshupPartnerApiClient {
   }
 
   async getDiscount(year: string, month: string){
-    const response = await this.axios.get('/discount',{
-      params: {
-        year,
-        month,
-      }
-    });
+    const params = {
+      year,
+      month,
+    };
+    const response = await this.axios.get('/discount', {params});
+    return response.data;
+  }
+
+  /*
+  async getAppLink(year: string, month: string){
+    const response = await this.axios.get('/discount', {params});
+    return response.data;
+  }
+  */
+
+  async getBusinessProfileDetails() {
+    const response = await this.axios.get('/business/profile');
+    return response.data;
+  }
+
+  async getBusinessProfileAbout() {
+    const response = await this.axios.get('/business/profile/about');
+    return response.data;
+  }
+
+  async getBusinessProfilePhoto() {
+    const response = await this.axios.get('/business/profile/photo');
     return response.data;
   }
 }

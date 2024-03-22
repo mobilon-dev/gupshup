@@ -1,6 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { Template, TemplateCreateData, GupshupPartnerApiClientConfig } from './types';
 declare class GupshupPartnerApiClient {
+    portalUrl: string;
+    appId: string;
+    appToken: string;
     axios: AxiosInstance;
     constructor({ appId, appToken, debug }: GupshupPartnerApiClientConfig);
     getTemplates(): Promise<Template[]>;
@@ -14,5 +17,8 @@ declare class GupshupPartnerApiClient {
     updateEvents(events: string[]): Promise<boolean>;
     getUsage(from: string, to: string): Promise<any>;
     getDiscount(year: string, month: string): Promise<any>;
+    getBusinessProfileDetails(): Promise<any>;
+    getBusinessProfileAbout(): Promise<any>;
+    getBusinessProfilePhoto(): Promise<any>;
 }
 export { GupshupPartnerApiClient, };

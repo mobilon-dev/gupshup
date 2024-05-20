@@ -2,6 +2,12 @@ import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
 // import {stringify} from 'qs';
 
+const check = (val: string) => {
+  if (!val || val === '') {
+    throw new Error('EMPTY_VALUE');
+  }
+}
+
 import type {
   GupshupAPIClientConfig, 
   ContactCard,
@@ -31,6 +37,9 @@ export class GupshupAPIClient {
     this.APP_NAME = APP_NAME;
     this.SOURCE_MOBILE_NUMBER = SOURCE_MOBILE_NUMBER;
     this.APP_ID = APP_ID;
+
+    check(this.API_KEY);
+    check(this.APP_NAME);
 
     this.axios = axios.create({
       baseURL: 'https://api.gupshup.io',

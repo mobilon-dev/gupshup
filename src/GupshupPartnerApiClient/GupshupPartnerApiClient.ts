@@ -8,6 +8,12 @@ import {
   GupshupPartnerApiClientConfig,
 } from './types';
 
+const check = (val: string) => {
+  if (!val || val === '') {
+    throw new Error('EMPTY_VALUE');
+  }
+}
+
 class GupshupPartnerApiClient {
   portalUrl: string;
   appId: string;
@@ -18,6 +24,10 @@ class GupshupPartnerApiClient {
     this.portalUrl = 'https://partner.gupshup.io';
     this.appId = appId;
     this.appToken = appToken;
+
+    check(this.appId);
+    check(this.appToken);
+
     this.axios = axios.create({
       baseURL: `https://partner.gupshup.io/partner/app/${appId}/`,
       headers: {

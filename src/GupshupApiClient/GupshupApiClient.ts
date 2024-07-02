@@ -14,6 +14,7 @@ import type {
   QuickReplyMessage,
 } from './types';
 
+
 const SEND_TEXT_MESSAGE_URL = '/wa/api/v1/msg';
 const SENT_TEMPLATE_MESSAGE_URL = '/wa/api/v1/template/msg';
 
@@ -21,7 +22,7 @@ export class GupshupAPIClient {
   API_KEY: string;
   APP_NAME: string;
   SOURCE_MOBILE_NUMBER: string;
-  APP_ID?: string;
+  APP_ID: string;
   axios: AxiosInstance;
   debug: boolean;
 
@@ -34,6 +35,7 @@ export class GupshupAPIClient {
 
     check(this.API_KEY);
     check(this.APP_NAME);
+    check(this.APP_ID);
 
     this.axios = axios.create({
       baseURL: 'https://api.gupshup.io',
@@ -47,7 +49,7 @@ export class GupshupAPIClient {
     if (this.debug) {
       const config = {
         prefixText: 'GupshupApiClient',
-        // status: true,
+        status: true,
         headers: false,
         params: true,
       };
@@ -77,8 +79,13 @@ export class GupshupAPIClient {
    * 
    * @returns 
    */
-  getTemplatesList = async () => {
+  getDeprecatedTemplatesList = async () => {
     const url = `/sm/api/v1/template/list/${this.APP_NAME}`;
+    return await this.axios.get(url);
+  };
+
+  getTemplatesList = async () => {
+    const url = `/wa/app/${this.APP_ID}/template`; // /sm/api/v1/template/list/${this.APP_NAME}`;
     return await this.axios.get(url);
   };
 
@@ -87,16 +94,16 @@ export class GupshupAPIClient {
     return await this.axios.get(url);
   }
 
+  /*
+  * 
+  * @deprecated
+  */
   getOptInUsersList = async () => {
     const url = `/sm/api/v1/users/${this.APP_NAME}`;
     return await this.axios.get(url);
   }
 
   markRead = async (msgid: string) => {
-    if (!this.APP_ID) {
-      throw new Error('ERROR_NOT_SET_APP_ID');
-    }
-
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}/read`;
     // вернет пустую data
     return await this.axios.put(url, null, {
@@ -106,6 +113,23 @@ export class GupshupAPIClient {
     });
   }
 
+  setReadStatus = async(msgid: string) => {
+    return await this.markRead(msgid);
+  }
+
+  getReadStatus = async (msgid: string) => {
+    const url = `/wa/app/${this.APP_ID}/msg/${msgid}`;    
+    return await this.axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
+  /*
+  * 
+  * @deprecated
+  */
   markUserOptIn = async (userMobileNumber: string) => {
     const params = this.getUrlEncodedData({
       user: userMobileNumber
@@ -115,6 +139,10 @@ export class GupshupAPIClient {
     return await this.axios.post(url, params);
   };
 
+  /*
+  * 
+  * @deprecated
+  */
   markBulkOptIn = async (userMobileNumbers: string[]) => {
     const params = this.getUrlEncodedData({
       users: userMobileNumbers

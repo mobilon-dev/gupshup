@@ -89,6 +89,10 @@ export class GupshupAPIClient {
     return await this.axios.get(url);
   };
 
+  /*
+  * 
+  * @deprecated
+  */
   getWalletBalance = async () => {
     const url = '/sm/api/v2/wallet/balance';
     return await this.axios.get(url);

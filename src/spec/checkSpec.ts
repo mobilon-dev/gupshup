@@ -3,6 +3,7 @@ import {GupshupAPIClient} from '../index';
 const client = new GupshupAPIClient({
   API_KEY: 'test',
   APP_NAME: 'test',
+  APP_ID: 'test',
   SOURCE_MOBILE_NUMBER: 'test',
 });
 

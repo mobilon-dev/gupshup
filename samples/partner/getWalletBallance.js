@@ -10,7 +10,7 @@ const client = new GupshupPartnerApiClient({
 async function run () {
   const response = await client.getWalletBalance();
 
-  console.log(response.data);
+  console.log(response);
 }
 
 (run)();

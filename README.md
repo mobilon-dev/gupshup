@@ -25,10 +25,11 @@ const client = new GupshupAPIClient({
 
 async function run () {
   // const response = await client.getTemplatesList();
-  
-  // const response = await client.getWalletBalance();
 
   // const response = await client.sendTextMessage('79135292926', 'привет');
+
+  // const response = await client.sendTemplateTextMessage('79135292926', 'template-id-string',
+  //   ['привет', 'по цене догвооримся']);
 
   const response = await client.sendMediaImageMessage(
     '79135292926', 

@@ -4,13 +4,15 @@ const {
   API_KEY,
   APP_NAME,
   SOURCE_MOBILE_NUMBER,
-  debug
+  debug,
+  appId
 } = require('./_config');
 
 const client = new GupshupAPIClient({
   API_KEY,
   APP_NAME,
   SOURCE_MOBILE_NUMBER,
+  APP_ID: appId,
   debug,
 });
 

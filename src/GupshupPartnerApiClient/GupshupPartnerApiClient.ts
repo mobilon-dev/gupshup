@@ -95,6 +95,16 @@ class GupshupPartnerApiClient {
     }
   }
   
+  async getWalletBalance() {
+    const response = await this.axios.get('/wallet/balance');
+    return response.data;
+  }
+
+  async checkHealth() {
+    const response = await this.axios.get('/health');
+    return response.data;
+  }
+
   async getMessageLimit() {
     const response = await this.axios.get('/ratings');
     return response.data;

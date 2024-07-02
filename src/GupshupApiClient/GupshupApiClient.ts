@@ -14,8 +14,8 @@ import type {
   QuickReplyMessage,
 } from './types';
 
-const SEND_TEXT_MESSAGE_URL = '/sm/api/v1/msg';
-const SENT_TEMPLATE_MESSAGE_URL = '/sm/api/v1/template/msg';
+const SEND_TEXT_MESSAGE_URL = '/wa/api/v1/msg';
+const SENT_TEMPLATE_MESSAGE_URL = '/wa/api/v1/template/msg';
 
 export class GupshupAPIClient {
   API_KEY: string;
@@ -23,12 +23,14 @@ export class GupshupAPIClient {
   SOURCE_MOBILE_NUMBER: string;
   APP_ID?: string;
   axios: AxiosInstance;
+  debug: boolean;
 
   constructor ({API_KEY, APP_NAME, SOURCE_MOBILE_NUMBER, APP_ID, debug}: GupshupAPIClientConfig) {
     this.API_KEY = API_KEY;
     this.APP_NAME = APP_NAME;
     this.SOURCE_MOBILE_NUMBER = SOURCE_MOBILE_NUMBER;
     this.APP_ID = APP_ID;
+    this.debug = debug;
 
     check(this.API_KEY);
     check(this.APP_NAME);
@@ -42,7 +44,7 @@ export class GupshupAPIClient {
       },
     });
 
-    if (debug) {
+    if (this.debug) {
       const config = {
         prefixText: 'GupshupApiClient',
         // status: true,
@@ -95,7 +97,6 @@ export class GupshupAPIClient {
       throw new Error('ERROR_NOT_SET_APP_ID');
     }
 
-    //const apiUrl = 'https://api.gupshup.io';
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}/read`;
     // вернет пустую data
     return await this.axios.put(url, null, {
@@ -110,6 +111,7 @@ export class GupshupAPIClient {
       user: userMobileNumber
     });
     const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
+    if (this.debug) console.log('params', params);
     return await this.axios.post(url, params);
   };
 
@@ -117,6 +119,7 @@ export class GupshupAPIClient {
     const params = this.getUrlEncodedData({
       users: userMobileNumbers
     });
+    if (this.debug) console.log('params', params);
     const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
     return await this.axios.post(url, params);
   };
@@ -134,7 +137,7 @@ export class GupshupAPIClient {
         caption
       }
     });
-    
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -150,7 +153,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -165,7 +168,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -181,7 +184,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
   
@@ -196,7 +199,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -212,7 +215,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
       disablePreview: false
     });
-    console.log('text', params);
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -236,7 +239,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME,
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -251,7 +254,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME,
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -270,7 +273,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME,
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -287,7 +290,7 @@ export class GupshupAPIClient {
       },
       'src.name': this.APP_NAME,
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
@@ -302,7 +305,7 @@ export class GupshupAPIClient {
         params: templateParams,
       },
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
@@ -326,7 +329,7 @@ export class GupshupAPIClient {
         },
       },
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
@@ -350,7 +353,7 @@ export class GupshupAPIClient {
         },
       },
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
@@ -376,7 +379,7 @@ export class GupshupAPIClient {
         },
       },
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
@@ -402,7 +405,7 @@ export class GupshupAPIClient {
         },
       },
     });
-
+    if (this.debug) console.log('params', params);
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 

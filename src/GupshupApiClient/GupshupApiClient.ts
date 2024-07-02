@@ -1,6 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
-// import {stringify} from 'qs';
 
 const check = (val: string) => {
   if (!val || val === '') {
@@ -15,22 +14,15 @@ import type {
   QuickReplyMessage,
 } from './types';
 
+const SEND_TEXT_MESSAGE_URL = '/sm/api/v1/msg';
+const SENT_TEMPLATE_MESSAGE_URL = '/sm/api/v1/template/msg';
+
 export class GupshupAPIClient {
   API_KEY: string;
   APP_NAME: string;
   SOURCE_MOBILE_NUMBER: string;
   APP_ID?: string;
   axios: AxiosInstance;
-
-  url: { 
-    getTemplatesList: string;
-    optInUser: string;
-    bulkOptIn: string;
-    sendTextMessage: string;
-    sendTemplateMessage: string;
-    getWalletBalance: string;
-    optInUsersList: string;
-  };
 
   constructor ({API_KEY, APP_NAME, SOURCE_MOBILE_NUMBER, APP_ID, debug}: GupshupAPIClientConfig) {
     this.API_KEY = API_KEY;
@@ -49,19 +41,6 @@ export class GupshupAPIClient {
         apiKey: this.API_KEY,
       },
     });
-
-    this.url = {
-      getTemplatesList: `/sm/api/v1/template/list/${APP_NAME}`,
-      optInUser: `/sm/api/v1/app/opt/in/${APP_NAME}`,
-      bulkOptIn: `/sm/api/v1/app/opt/in/${APP_NAME}`,
-      optInUsersList: `/sm/api/v1/users/${APP_NAME}`,
-      sendTextMessage: '/sm/api/v1/msg',
-      sendTemplateMessage: '/sm/api/v1/template/msg',
-      getWalletBalance: '/sm/api/v2/wallet/balance',
-      // markRead: `/wa/app/${APP_ID}/msg/{msgId}/read`,
-    };
-
-
 
     if (debug) {
       const config = {
@@ -96,13 +75,20 @@ export class GupshupAPIClient {
    * 
    * @returns 
    */
-  getTemplatesList = async () => await this.axios.get(this.url.getTemplatesList);
+  getTemplatesList = async () => {
+    const url = `/sm/api/v1/template/list/${this.APP_NAME}`;
+    return await this.axios.get(url);
+  };
 
   getWalletBalance = async () => {
-    return await this.axios.get(this.url.getWalletBalance);
+    const url = '/sm/api/v2/wallet/balance';
+    return await this.axios.get(url);
   }
 
-  getOptInUsersList = async () => await this.axios.get(this.url.optInUsersList);
+  getOptInUsersList = async () => {
+    const url = `/sm/api/v1/users/${this.APP_NAME}`;
+    return await this.axios.get(url);
+  }
 
   markRead = async (msgid: string) => {
     if (!this.APP_ID) {
@@ -123,16 +109,16 @@ export class GupshupAPIClient {
     const params = this.getUrlEncodedData({
       user: userMobileNumber
     });
-
-    return await this.axios.post(this.url.optInUser, params);
+    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
+    return await this.axios.post(url, params);
   };
 
   markBulkOptIn = async (userMobileNumbers: string[]) => {
     const params = this.getUrlEncodedData({
       users: userMobileNumbers
     });
-
-    return await this.axios.post(this.url.bulkOptIn, params);
+    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
+    return await this.axios.post(url, params);
   };
 
   sendMediaImageMessage = async (userMobileNumber: string, imageUrl: string, caption: string) => {
@@ -148,8 +134,8 @@ export class GupshupAPIClient {
         caption
       }
     });
-
-    return await this.axios.post(this.url.sendTextMessage, params);
+    
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendMediaVideoMessage = async (userMobileNumber: string, videoUrl: string, caption: string) => {
@@ -165,7 +151,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string) => {
@@ -180,7 +166,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string) => {
@@ -196,7 +182,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
   
   sendMediaStickerMessage = async (userMobileNumber: string, stickerUrl: string) => {
@@ -211,7 +197,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendTextMessage = async (userMobileNumber: string, message: string) => {
@@ -227,7 +213,7 @@ export class GupshupAPIClient {
       disablePreview: false
     });
     console.log('text', params);
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendLocation = async (
@@ -251,7 +237,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendContactCard = async (userMobileNumber: string, contact: ContactCard) => {
@@ -266,7 +252,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendListMessage = async (userMobileNumber: string, message: ListMessage) => {
@@ -285,7 +271,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendQuickReply = async (userMobileNumber: string, message: QuickReplyMessage) => {
@@ -302,7 +288,7 @@ export class GupshupAPIClient {
       'src.name': this.APP_NAME,
     });
 
-    return await this.axios.post(this.url.sendTextMessage, params);
+    return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
   sendTemplateTextMessage = async (
@@ -317,7 +303,7 @@ export class GupshupAPIClient {
       },
     });
 
-    return await this.axios.post(this.url.sendTemplateMessage, params);
+    return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
   sendTemplateImageMessage = async (
@@ -341,7 +327,7 @@ export class GupshupAPIClient {
       },
     });
 
-    return await this.axios.post(this.url.sendTemplateMessage, params);
+    return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
   sendTemplateVideoMessage = async (
@@ -365,7 +351,7 @@ export class GupshupAPIClient {
       },
     });
 
-    return await this.axios.post(this.url.sendTemplateMessage, params);
+    return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
   sendTemplateDocumentMessage = async (
@@ -391,7 +377,7 @@ export class GupshupAPIClient {
       },
     });
 
-    return await this.axios.post(this.url.sendTemplateMessage, params);
+    return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
   sendTemplateLocationMessage = async (
@@ -417,7 +403,7 @@ export class GupshupAPIClient {
       },
     });
 
-    return await this.axios.post(this.url.sendTemplateMessage, params);
+    return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
   checkContentType = (type: string, contentType: string) => {

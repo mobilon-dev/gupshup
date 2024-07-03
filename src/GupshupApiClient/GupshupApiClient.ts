@@ -75,37 +75,10 @@ export class GupshupAPIClient {
     return resultantData;
   };
 
-  /**
-   * 
-   * @returns 
-   */
-  getDeprecatedTemplatesList = async () => {
-    const url = `/sm/api/v1/template/list/${this.APP_NAME}`;
-    return await this.axios.get(url);
-  };
-
   getTemplatesList = async () => {
-    const url = `/wa/app/${this.APP_ID}/template`; // /sm/api/v1/template/list/${this.APP_NAME}`;
+    const url = `/wa/app/${this.APP_ID}/template`;
     return await this.axios.get(url);
   };
-
-  /*
-  * 
-  * @deprecated
-  */
-  getWalletBalance = async () => {
-    const url = '/sm/api/v2/wallet/balance';
-    return await this.axios.get(url);
-  }
-
-  /*
-  * 
-  * @deprecated
-  */
-  getOptInUsersList = async () => {
-    const url = `/sm/api/v1/users/${this.APP_NAME}`;
-    return await this.axios.get(url);
-  }
 
   markRead = async (msgid: string) => {
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}/read`;
@@ -129,32 +102,6 @@ export class GupshupAPIClient {
       },
     });
   }
-
-  /*
-  * 
-  * @deprecated
-  */
-  markUserOptIn = async (userMobileNumber: string) => {
-    const params = this.getUrlEncodedData({
-      user: userMobileNumber
-    });
-    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
-    if (this.debug) console.log('params', params);
-    return await this.axios.post(url, params);
-  };
-
-  /*
-  * 
-  * @deprecated
-  */
-  markBulkOptIn = async (userMobileNumbers: string[]) => {
-    const params = this.getUrlEncodedData({
-      users: userMobileNumbers
-    });
-    if (this.debug) console.log('params', params);
-    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
-    return await this.axios.post(url, params);
-  };
 
   sendMediaImageMessage = async (userMobileNumber: string, imageUrl: string, caption: string) => {
     const params = this.getUrlEncodedData({

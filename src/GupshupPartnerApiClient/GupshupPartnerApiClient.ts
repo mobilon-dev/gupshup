@@ -110,6 +110,12 @@ class GupshupPartnerApiClient {
     return response.data;
   }
 
+  async getQualityRating() {
+    const response = await this.axios.get('/ratings');
+    return response.data;
+  }
+
+
   async updateEvents(events: string[]) {
     try {
       const modes = events && events.length > 0 ? events.join(',') : '';

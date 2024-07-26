@@ -5,13 +5,18 @@ GupshupAPIclient(appName, cabinetKey, phone) - клиент для работы 
 GupshupPartnerApiClient(appUUID, appToken) - клиента для работы с партнерским API
 
 
-[Gupshup.io](https://gupshup.io)
+### ссылки
 
-[Gupshup group in Telegram](https://t.me/ru_gupshup)
+- [Gupshup.io](https://gupshup.io)
 
-[Gupshup API](https://docs.gupshup.io/reference/msg)
+- [Gupshup group in Telegram](https://t.me/ru_gupshup)
 
-[Gupshup Partner API](https://www.gupshup.io/docs/partner/)
+- [Gupshup API](https://docs.gupshup.io/reference/msg)
+
+
+### примеры
+
+больше в /samples
 
 
 `````javascript

@@ -12,9 +12,12 @@ const client = new GupshupPartnerTokenApiClient({
 
 async function run () {
 
-  const response = await client.getPartnerApps();
+  const dataApps = await client.getPartnerApps();
+  console.log('dataApps:', dataApps);
 
-  //const response = await client.getAccessTokenForApp('MobilonTelecomWABA0064App');
+
+  const appId = '52d361fe-7cbb-4715-a44c-4619060eedae';
+  const response = await client.getAccessTokenForApp(appId);
 
   console.log(response);
 }

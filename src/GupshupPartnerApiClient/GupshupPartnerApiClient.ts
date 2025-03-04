@@ -62,6 +62,11 @@ class GupshupPartnerApiClient {
     return response.data;
   }
 
+  async editTemplate(templateId: string, templateData: TemplateEditData) {
+    const response = await this.axios.put(`/templates/${templateId}`, stringify(templateData));
+    return response.data;
+  }
+
   async delTemplate(elementName: string) {
     const response = await this.axios.delete('/template/' + elementName);
     return response.data;

@@ -18,3 +18,17 @@ export interface TemplateCreateData{
   example: string;
   enableSample: boolean
 }
+
+export interface TemplateEditData{
+  content: string;
+  templateType: string;
+  example: string;
+  enableSample: boolean;
+  header: string;
+  footer: string;
+  buttons: TemplateCreateDataButtons[];
+  exampleMedia: string;
+  category: string;
+  mediaId: string;
+  mediaUrl: string;
+}

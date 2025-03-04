@@ -6,6 +6,7 @@ import {
   Template,
   TemplateCreateData,
   GupshupPartnerApiClientConfig,
+  TemplateEditData,
 } from './types';
 
 const check = (val: string) => {

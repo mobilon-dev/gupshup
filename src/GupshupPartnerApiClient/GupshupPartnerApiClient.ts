@@ -172,6 +172,11 @@ class GupshupPartnerApiClient {
     const response = await this.axios.get('/business/profile/photo');
     return response.data;
   }
+
+  async disableButtonClickAnalytics(templateId: string) {
+    const response = await this.axios.put(`/template/analytics/buttonclick`, stringify({templateId, disable:true}));
+    return response.data;
+  }
 }
 
 export {

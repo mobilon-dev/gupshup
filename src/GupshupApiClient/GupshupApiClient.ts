@@ -90,6 +90,24 @@ export class GupshupAPIClient {
     });
   }
 
+
+  markUserOptIn = async (userMobileNumber: string) => {
+    const params = this.getUrlEncodedData({
+      user: userMobileNumber
+    });
+    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
+    if (this.debug) console.log('params', params);
+    return await this.axios.post(url, params);
+  };
+
+  /*  
+  * @deprecated
+  */
+  getOptInUsersList = async () => {
+    const url = `/sm/api/v1/users/${this.APP_NAME}`;
+    return await this.axios.get(url);
+  }
+
   setReadStatus = async(msgid: string) => {
     return await this.markRead(msgid);
   }

@@ -97,7 +97,7 @@ export class GupshupAPIClient {
   /**
   * @group Subscription
   */
-  getSubscriptionById = async (subscriptionId: string) => {
+  getSubscription = async (subscriptionId: string) => {
     const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
     return await this.axios.get(url);
   };

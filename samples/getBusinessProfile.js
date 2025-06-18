@@ -22,6 +22,12 @@ async function run () {
 
   const response2 = await client.getBusinessProfileAbout();
   console.log(response2.data);
+
+  const response3 = await client.getBusinessProfileWABADetails();
+  console.log(response3.data);
+
+  const response4 = await client.getBusinessProfilePhoto();
+  console.log(response4.data);
 }
 
 (run)();

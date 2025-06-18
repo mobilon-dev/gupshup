@@ -173,6 +173,22 @@ export class GupshupAPIClient {
   }
 
   /**
+  * @group Bussiness Profile
+  */
+  getBusinessProfileWABADetails = async () => {
+    const url = `/wa/app/${this.APP_ID}/business/profile`;
+    return await this.axios.get(url);
+  }
+
+  /**
+  * @group Bussiness Profile
+  */
+  getBusinessProfilePhoto = async () => {
+    const url = `/wa/app/${this.APP_ID}/business/profile/photo`;
+    return await this.axios.get(url);
+  }
+
+  /**
   * @group Message Read Status
   */
   markRead = async (msgid: string) => {

@@ -134,6 +134,31 @@ export class GupshupAPIClient {
     return await this.axios.delete(url);
   };
 
+  /**
+  * @group Opt In
+  * @deprecated
+  */
+  markUserOptIn = async (userMobileNumber: string) => {
+    const params = this.getUrlEncodedData({
+      user: userMobileNumber
+    });
+    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
+    if (this.debug) console.log('params', params);
+    return await this.axios.post(url, params);
+  };
+
+  /**
+  * @group Opt In
+  * @deprecated
+  */
+  getOptInUsersList = async () => {
+    const url = `/sm/api/v1/users/${this.APP_NAME}`;
+    return await this.axios.get(url);
+  }
+
+  /**
+  * @group Message Read Status
+  */
   markRead = async (msgid: string) => {
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}/read`;
     // вернет пустую data
@@ -144,28 +169,18 @@ export class GupshupAPIClient {
     });
   }
 
-
-  markUserOptIn = async (userMobileNumber: string) => {
-    const params = this.getUrlEncodedData({
-      user: userMobileNumber
-    });
-    const url = `/sm/api/v1/app/opt/in/${this.APP_NAME}`;
-    if (this.debug) console.log('params', params);
-    return await this.axios.post(url, params);
-  };
-
-  /*  
-  * @deprecated
+  /**
+  * @group Message Read Status
+  * 
+  * alias {@link markRead}
   */
-  getOptInUsersList = async () => {
-    const url = `/sm/api/v1/users/${this.APP_NAME}`;
-    return await this.axios.get(url);
-  }
-
   setReadStatus = async(msgid: string) => {
     return await this.markRead(msgid);
   }
 
+  /**
+  * @group Message Read Status
+  */
   getReadStatus = async (msgid: string) => {
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}`;    
     return await this.axios.get(url, {
@@ -175,6 +190,9 @@ export class GupshupAPIClient {
     });
   }
 
+  /**
+  * @group Session Message
+  */
   sendMediaImageMessage = async (userMobileNumber: string, imageUrl: string, caption: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -192,6 +210,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendMediaVideoMessage = async (userMobileNumber: string, videoUrl: string, caption: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -208,6 +229,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -223,6 +247,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -239,6 +266,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
   
+  /**
+  * @group Session Message
+  */
   sendMediaStickerMessage = async (userMobileNumber: string, stickerUrl: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -254,6 +284,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendTextMessage = async (userMobileNumber: string, message: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -270,6 +303,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendLocation = async (
     userMobileNumber: string,
     longitude: string,
@@ -294,6 +330,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendContactCard = async (userMobileNumber: string, contact: ContactCard) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -309,6 +348,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendListMessage = async (userMobileNumber: string, message: ListMessage) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -328,6 +370,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Session Message
+  */
   sendQuickReply = async (userMobileNumber: string, message: QuickReplyMessage) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
@@ -345,6 +390,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Template Message
+  */
   sendTemplateTextMessage = async (
     userMobileNumber: string, templateId: string, templateParams: string[],
     ) => {
@@ -360,6 +408,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Template Message
+  */
   sendTemplateImageMessage = async (
     userMobileNumber: string,
     templateId: string,
@@ -384,6 +435,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Template Message
+  */
   sendTemplateVideoMessage = async (
     userMobileNumber: string,
     templateId: string,
@@ -408,6 +462,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Template Message
+  */
   sendTemplateDocumentMessage = async (
     userMobileNumber: string,
     templateId: string,
@@ -434,6 +491,9 @@ export class GupshupAPIClient {
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
+  /**
+  * @group Template Message
+  */
   sendTemplateLocationMessage = async (
     userMobileNumber: string,
     templateId: string,
@@ -460,6 +520,7 @@ export class GupshupAPIClient {
     return await this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   };
 
+
   checkContentType = (type: string, contentType: string) => {
     const types: {[key: string]: string[]} = {
       audio: ['audio/aac', 'audio/mp4', 'audio/amr', 'audio/mpeg', 'audio/ogg;codecs=opus'],
@@ -468,6 +529,7 @@ export class GupshupAPIClient {
     };
     return types[type].includes(contentType.replace(/ /g,''));
   }
+
 
   checkSize = (type: string, size: number) => {
     const types: {[key: string]: number} = {

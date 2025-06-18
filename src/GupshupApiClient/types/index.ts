@@ -90,3 +90,19 @@ export interface QuickReplyMessage {
   content: QuickReplyMessageTextContent | QuickReplyMessageMediaContent;
   options: QuickReplyMessageOption[];
 }
+
+export interface SubscriptionDataAdd {
+  url: string;
+  tag: string;
+  version: number;
+  modes: string;
+  doCheck: string;
+}
+
+export interface SubscriptionDataUpdate {
+  url: string;
+  tag: string;
+  version: number;
+  modes: string;
+  active: boolean;
+}

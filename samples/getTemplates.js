@@ -18,8 +18,13 @@ const client = new GupshupAPIClient({
 
 async function run () {
   const response = await client.getTemplatesList();
-
   console.log(response.data);
+
+  const templateId = '7418bd9a-1381-437e-939b-9f47898c53dd';
+  const response2 = await client.getTemplateById(templateId);
+  console.log(response2.data);
+
+
 }
 
 (run)();

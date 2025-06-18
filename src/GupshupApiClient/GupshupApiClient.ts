@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
+import {stringify} from 'qs';
 
 const check = (val: string) => {
   if (!val || val === '') {
@@ -12,6 +13,8 @@ import type {
   ContactCard,
   ListMessage,
   QuickReplyMessage,
+  SubscriptionDataAdd,
+  SubscriptionDataUpdate,
 } from './types';
 
 
@@ -75,9 +78,60 @@ export class GupshupAPIClient {
     return resultantData;
   };
 
+  /**
+  * @group Template
+  */
   getTemplatesList = async () => {
     const url = `/wa/app/${this.APP_ID}/template`;
     return await this.axios.get(url);
+  };
+  
+  /**
+  * @group Template
+  */
+  getTemplateById = async (templateId: string) => {
+    const url = `/wa/app/${this.APP_ID}/template/${templateId}`;
+    return await this.axios.get(url);
+  };
+
+  /**
+  * @group Subscription
+  */
+  getSubscriptionById = async (subscriptionId: string) => {
+    const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
+    return await this.axios.get(url);
+  };
+  
+  /**
+  * @group Subscription
+  */
+  addSubscription = async (data: SubscriptionDataAdd) => {
+    const url = `/wa/app/${this.APP_ID}/subscription`;
+    return await this.axios.post(url, stringify(data));
+  };
+
+  /**
+  * @group Subscription
+  */
+  updateSubscription = async (subscriptionId: string, data: SubscriptionDataUpdate) => {
+    const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
+    return await this.axios.put(url, stringify(data));
+  };
+
+  /**
+  * @group Subscription
+  */
+  deleteSubscription = async (subscriptionId: string) => {
+    const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
+    return await this.axios.delete(url);
+  };
+
+  /**
+  * @group Subscription
+  */
+  deleteAllSubscriptions = async () => {
+    const url = `/wa/app/${this.APP_ID}/subscription`;
+    return await this.axios.delete(url);
   };
 
   markRead = async (msgid: string) => {

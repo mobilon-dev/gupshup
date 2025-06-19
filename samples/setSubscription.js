@@ -1,5 +1,5 @@
 const {GupshupAPIClient} = require('../dist');
-
+const {stringify} = require('qs');
 const {
   API_KEY,
   APP_NAME,
@@ -22,10 +22,13 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function run () {
 
   const q = await client.addSubscription({
-    url: 'https://gwaba-gupshup-api.services.mobilon.ru/message/GWABA0001-555',
-    tag: 'to2',
+    url: 'https://gwaba-gupshup-api.services.mobilon.ru/message/WABAAPPID',
+    tag: 'custom_name_webhook',
     version: '2',
-    modes: 'NONE',
+    // modes: 'NONE',  
+    // 'DELIVERED', 'READ', 'SENT', 'DELETED', 'OTHERS', 'TEMPLATE', 'ACCOUNT'
+    modes: 'SENT,DELIVERED,ENQUEUED,READ,DELETED,OTHERS,MESSAGE,TEMPLATE,ACCOUNT,BILLING',  // version=2
+    // modes: 'SENT,DELIVERED,ENQUEUED,READ,DELETED,OTHERS,MESSAGE,TEMPLATE,ACCOUNT,BILLING,FLOWMESSAGE,PAYMENTS',  // version=3
     doCheck: 'false'
   });
   console.log('q', q.data);

@@ -22,13 +22,12 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function run () {
 
   const q = await client.addSubscription({
-    url: 'https://gwaba-gupshup-api.services.mobilon.ru/message/WABAAPPID',
-    tag: 'custom_name_webhook',
+    url: 'https://gwaba-gupshup-api.services.mobilon.ru/message/GWABA0001-555',
+    tag: 'to2-3',
     version: '2',
-    // modes: 'NONE',  
-    // 'DELIVERED', 'READ', 'SENT', 'DELETED', 'OTHERS', 'TEMPLATE', 'ACCOUNT'
+    // modes: 'NONE',
     modes: 'SENT,DELIVERED,ENQUEUED,READ,DELETED,OTHERS,MESSAGE,TEMPLATE,ACCOUNT,BILLING',  // version=2
-    // modes: 'SENT,DELIVERED,ENQUEUED,READ,DELETED,OTHERS,MESSAGE,TEMPLATE,ACCOUNT,BILLING,FLOWMESSAGE,PAYMENTS',  // version=3
+    // modes: 'SENT,DELIVERED,ENQUEUED,READ,DELETED,OTHERS,MESSAGE,TEMPLATE,ACCOUNT,BILLING,FLOWS_MESSAGE,PAYMENTS',  // version=3
     doCheck: 'false'
   });
   console.log('q', q.data);

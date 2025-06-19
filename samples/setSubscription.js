@@ -1,5 +1,5 @@
 const {GupshupAPIClient} = require('../dist');
-const {stringify} = require('qs');
+
 const {
   API_KEY,
   APP_NAME,
@@ -31,6 +31,7 @@ async function run () {
     doCheck: 'false'
   });
   console.log('q', q.data);
+
   const subscriptionId = q.data?.subscription?.id;
   console.log('subscription id', subscriptionId);
   await delay(30000);

@@ -7,6 +7,8 @@ import {
   TemplateCreateData,
   GupshupPartnerApiClientConfig,
   TemplateEditData,
+  PartnerSubscriptionDataAdd,
+  PartnerSubscriptionDataUpdate,
 } from './types';
 
 const check = (val: string) => {
@@ -53,21 +55,81 @@ class GupshupPartnerApiClient {
     }
   }
 
+  /**
+  * @group Subscription
+  */
+  getAllSubscriptions = async () => {
+    const url = `/subscription`;
+    return await this.axios.get(url);
+  };
+
+  /**
+  * @group Subscription
+  */
+  getSubscription = async (subscriptionId: string) => {
+    const url = `/subscription/${subscriptionId}`;
+    return await this.axios.get(url);
+  };
+
+  /**
+  * @group Subscription
+  */
+  addSubscription = async (data: PartnerSubscriptionDataAdd) => {
+    const url = `/subscription`;
+    return await this.axios.post(url, stringify(data));
+  };
+
+  /**
+  * @group Subscription
+  */
+  updateSubscription = async (subscriptionId: string, data: PartnerSubscriptionDataUpdate) => {
+    const url = `/subscription/${subscriptionId}`;
+    return await this.axios.put(url, stringify(data));
+  };
+
+  /**
+  * @group Subscription
+  */
+  deleteSubscription = async (subscriptionId: string) => {
+    const url = `/subscription/${subscriptionId}`;
+    return await this.axios.delete(url);
+  };
+
+  /**
+  * @group Subscription
+  */
+  deleteAllSubscriptions = async () => {
+    const url = `/subscription`;
+    return await this.axios.delete(url);
+  };
+
+  /**
+  * @group Template
+  */
   async getTemplates(): Promise<Template[]> {
     const response = await this.axios.get('/templates');
     return response.data;
   }
 
+  /**
+  * @group Template
+  */
   async postTemplate(templateData: TemplateCreateData) {
     const response = await this.axios.post('/templates', stringify(templateData));
     return response.data;
   }
 
+  /**
+  * @group Template
+  */
   async editTemplate(templateId: string, templateData: TemplateEditData) {
     const response = await this.axios.put(`/templates/${templateId}`, stringify(templateData));
     return response.data;
   }
 
+  /**
+  * @group Template
+  */
   async delTemplate(elementName: string) {
     const response = await this.axios.delete('/template/' + elementName);
     return response.data;
@@ -101,6 +163,9 @@ class GupshupPartnerApiClient {
     }
   }
   
+  /**
+  * @group Wallet
+  */
   async getWalletBalance() {
     const response = await this.axios.get('/wallet/balance');
     return response.data;
@@ -158,16 +223,25 @@ class GupshupPartnerApiClient {
   }
   */
 
+  /**
+  * @group Business Profile
+  */
   async getBusinessProfileDetails() {
     const response = await this.axios.get('/business/profile');
     return response.data;
   }
 
+  /**
+  * @group Business Profile
+  */
   async getBusinessProfileAbout() {
     const response = await this.axios.get('/business/profile/about');
     return response.data;
   }
 
+  /**
+  * @group Business Profile
+  */
   async getBusinessProfilePhoto() {
     const response = await this.axios.get('/business/profile/photo');
     return response.data;

@@ -282,7 +282,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string) => {
+  sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string, caption: string | null) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -291,6 +291,7 @@ export class GupshupAPIClient {
         type: 'file',
         url: fileUrl,
         filename,
+        caption,
       },
       'src.name': this.APP_NAME
     });

@@ -1,6 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
 import {stringify} from 'qs';
+import * as FormData from 'form-data';
 
 const check = (val: string) => {
   if (!val || val === '') {
@@ -195,6 +196,23 @@ export class GupshupAPIClient {
   getBusinessProfilePhoto = async () => {
     const url = `/wa/app/${this.APP_ID}/business/profile/photo`;
     return await this.axios.get(url);
+  }
+
+  /**
+  * @group Bussiness Profile
+  */
+  updateBusinessProfilePhoto = async (file: any) => {
+    const url = `/wa/app/${this.APP_ID}/business/profile/photo`;
+    const form = new FormData();
+    form.append('image', file);
+    const request_config = {
+      headers: {
+        'accept': 'application/json',
+        ...form.getHeaders(),
+      },
+    };
+
+    return await this.axios.put(url, form, request_config);
   }
 
   /**

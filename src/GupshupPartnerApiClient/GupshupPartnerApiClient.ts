@@ -247,6 +247,9 @@ class GupshupPartnerApiClient {
     return response.data;
   }
 
+  /**
+  * @group Template Analytics
+  */
   async disableButtonClickAnalytics(templateId: string) {
     const response = await this.axios.post(`/template/analytics/buttonclick`, stringify({templateId, disable:true}));
     return response.data;

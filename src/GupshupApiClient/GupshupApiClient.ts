@@ -175,6 +175,15 @@ export class GupshupAPIClient {
   /**
   * @group Bussiness Profile
   */
+  updateBusinessProfileAbout = async (about: string) => {
+    const url = `/wa/app/${this.APP_ID}/business/profile/about`;
+    const data = this.getUrlEncodedData({about});
+    return await this.axios.put(url, data);
+  }
+
+  /**
+  * @group Bussiness Profile
+  */
   getBusinessProfileWABADetails = async () => {
     const url = `/wa/app/${this.APP_ID}/business/profile`;
     return await this.axios.get(url);

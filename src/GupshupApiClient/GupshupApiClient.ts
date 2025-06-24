@@ -16,6 +16,7 @@ import type {
   QuickReplyMessage,
   SubscriptionDataAdd,
   SubscriptionDataUpdate,
+  BusinessProfileDetails,
 } from './types';
 
 
@@ -163,7 +164,7 @@ export class GupshupAPIClient {
   getBusinessDetails = async () => {
     const url = `/wa/app/${this.APP_ID}/business`;
     return await this.axios.get(url);
-  }
+  }  
 
   /**
   * @group Bussiness Profile
@@ -185,9 +186,17 @@ export class GupshupAPIClient {
   /**
   * @group Bussiness Profile
   */
-  getBusinessProfileWABADetails = async () => {
+  getBusinessProfileDetails = async () => {
     const url = `/wa/app/${this.APP_ID}/business/profile`;
     return await this.axios.get(url);
+  }
+
+  /**
+  * @group Bussiness Profile
+  */
+  updateBusinessProfileDetails = async (data: BusinessProfileDetails) => {
+    const url = `/wa/app/${this.APP_ID}/business/profile`;
+    return await this.axios.put(url, data);
   }
 
   /**
@@ -262,8 +271,8 @@ export class GupshupAPIClient {
         type: 'image',
         originalUrl: imageUrl,
         previewUrl: imageUrl,
-        caption
-      }
+        caption,
+      },
     });
     if (this.debug) console.log('params', params);
     return await this.axios.post(SEND_TEXT_MESSAGE_URL, params);
@@ -291,7 +300,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string) => {
+  sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string, caption: string) => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -299,6 +308,7 @@ export class GupshupAPIClient {
       message: {
         type: 'audio',
         url: audioUrl,
+        caption,
       },
       'src.name': this.APP_NAME
     });

@@ -106,3 +106,17 @@ export interface SubscriptionDataUpdate {
   modes: string;
   active: boolean;
 }
+
+export interface BusinessProfileDetails {
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  country?: string;
+  desc?: string;
+  pinCode?: string;
+  profileEmail?: string;
+  state?: string;
+  vertical?: string;
+  website1?: string;
+  website2?: string;
+}

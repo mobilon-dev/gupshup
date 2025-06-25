@@ -11,6 +11,9 @@ const start = async () => {
 
   const data = await client.getWABAInfo();
   console.log('data', data);
+
+  const data2 = await client.checkHealth();
+  console.log('data', data2);
 }
 
 (start)()
@@ -40,6 +43,10 @@ data {
     wabaName: 'Мобилон Телекоммуникации'
   }
 }
+
+[GupshupPartnerApiClient][Request] GET https://partner.gupshup.io/partner/app/ba3f292a-d52d-4524-bd9a-b4b0f6c46a3f/health
+[GupshupPartnerApiClient][Response] GET https://partner.gupshup.io/partner/app/ba3f292a-d52d-4524-bd9a-b4b0f6c46a3f/health 200 {"status":"success","healthy":"true"}
+data { status: 'success', healthy: 'true' }
 
 
 */

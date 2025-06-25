@@ -164,29 +164,48 @@ class GupshupPartnerApiClient {
   }
   
   /**
-  * @group Wallet
+  * @group WABA Management
   */
   async getWalletBalance() {
     const response = await this.axios.get('/wallet/balance');
     return response.data;
   }
 
+  /**
+  * @group WABA Management
+  */
   async checkHealth() {
     const response = await this.axios.get('/health');
     return response.data;
   }
 
+  /**
+  * @group WABA Management
+  */
   async getMessageLimit() {
     const response = await this.axios.get('/ratings');
     return response.data;
   }
 
+  /**
+  * @group WABA Management
+  */
   async getQualityRating() {
     const response = await this.axios.get('/ratings');
     return response.data;
   }
 
+  /**
+  * @group WABA Management
+  */
+  async getWABAInfo() {
+    const response = await this.axios.get('/waba/info');
+    return response.data;
+  }
 
+  /**
+  * @deprecated
+  */
   async updateEvents(events: string[]) {
     try {
       const modes = events && events.length > 0 ? events.join(',') : '';

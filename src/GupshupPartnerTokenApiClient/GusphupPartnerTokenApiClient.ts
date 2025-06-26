@@ -51,4 +51,29 @@ export class GupshupPartnerTokenApiClient {
     return response.data;
   }
 
+  async createApp(appName: string) {
+    const url = `/partner/app`;
+    const data = {
+      name: appName,
+      templateMessaging: true,
+      disableOptinPrefUrl: false,
+    };
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    const response = await axios.post(url, data, {headers});
+    return response.data;
+  }
+
+  async getAuthLink(appUUID: string) {
+    const url = `/partner/app/${appUUID}/onboarding/embed/link`;
+    const response = await axios.get(url, {
+      params: {
+        regenerate: true,
+        // user: 'mobilon',
+        // lang: 'Russian',
+      },
+    });
+    return response.data;
+  }
 }

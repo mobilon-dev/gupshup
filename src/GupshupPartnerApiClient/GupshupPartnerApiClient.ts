@@ -227,6 +227,9 @@ class GupshupPartnerApiClient {
     return response.data;
   }
 
+  /**
+  * @group Media
+  */
   async generateMediaIdUsingUpload(file: any, file_type: string) {
     const form = new FormData();
     form.append('file', file);
@@ -238,6 +241,15 @@ class GupshupPartnerApiClient {
     };
 
     const response = await this.axios.post('/media', form, request_config);
+    return response.data;
+  }
+
+  /**
+  * @group Media
+  */
+  async downloadMedia(mediaId: string) {
+    const url = `/media/${mediaId}`;
+    const response = await this.axios.get(url);
     return response.data;
   }
 

@@ -1,6 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
 import { requestLogger, responseLogger } from 'axios-logger';
 import {stringify} from 'qs';
+import * as FormData from 'form-data';
 
 import {
   Template,
@@ -223,6 +224,20 @@ class GupshupPartnerApiClient {
         to,
       }
     });
+    return response.data;
+  }
+
+  async generateMediaIdUsingUpload(file: any, file_type: string) {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('file_type', file_type);
+    const request_config = {
+      headers: {
+        ...form.getHeaders(),
+      },
+    };
+
+    const response = await this.axios.post('/media', form, request_config);
     return response.data;
   }
 

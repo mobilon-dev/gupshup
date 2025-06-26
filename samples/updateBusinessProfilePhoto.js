@@ -1,6 +1,7 @@
-const {GupshupAPIClient} = require('../dist');
 const fs = require('fs');
 const path = require('path');
+
+const {GupshupAPIClient} = require('../dist');
 
 const {
   API_KEY,

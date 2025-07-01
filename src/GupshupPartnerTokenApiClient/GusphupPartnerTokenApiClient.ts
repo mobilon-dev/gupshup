@@ -1,7 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 import { requestLogger, responseLogger } from 'axios-logger';
 
-import {GupshupPartnerTokenApiClientConfig} from './types'
+import {
+  GupshupPartnerTokenApiClientConfig,
+  GetAuthLinkParams,
+} from './types'
 
 export class GupshupPartnerTokenApiClient {
   portalUrl: string;
@@ -65,15 +68,9 @@ export class GupshupPartnerTokenApiClient {
     return response.data;
   }
 
-  async getAuthLink(appUUID: string) {
+  async getAuthLink(appUUID: string, params: GetAuthLinkParams) {
     const url = `/partner/app/${appUUID}/onboarding/embed/link`;
-    const response = await axios.get(url, {
-      params: {
-        regenerate: true,
-        // user: 'mobilon',
-        // lang: 'Russian',
-      },
-    });
+    const response = await axios.get(url, {params});
     return response.data;
   }
 }

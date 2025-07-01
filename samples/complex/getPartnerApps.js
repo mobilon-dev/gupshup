@@ -29,7 +29,10 @@ async function run () {
   });
   
   const dataApps = await gsPartnerTokenClient.getPartnerApps();
-  console.log('dataApps:', dataApps);
+  console.log('apps:', dataApps.partnerAppsList.length);
+  const liveApps = dataApps.partnerAppsList.filter(a => a.live === true)
+  console.log('live apps:', liveApps.length);
+  console.log('live', liveApps.splice(0,2))
 
 }
 

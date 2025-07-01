@@ -64,13 +64,13 @@ export class GupshupPartnerTokenApiClient {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
-    const response = await axios.post(url, data, {headers});
+    const response = await this.axios.post(url, data, {headers});
     return response.data;
   }
 
   async getAuthLink(appUUID: string, params: GetAuthLinkParams) {
     const url = `/partner/app/${appUUID}/onboarding/embed/link`;
-    const response = await axios.get(url, {params});
+    const response = await this.axios.get(url, {params});
     return response.data;
   }
 }

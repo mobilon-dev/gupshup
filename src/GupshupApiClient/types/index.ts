@@ -120,3 +120,7 @@ export interface BusinessProfileDetails {
   website1?: string;
   website2?: string;
 }
+
+export type AnyObject = Record<string, unknown>;
+
+export type UploadableFile = Buffer | Blob | NodeJS.ReadableStream;

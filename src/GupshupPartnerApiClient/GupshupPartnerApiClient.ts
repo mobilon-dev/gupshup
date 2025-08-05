@@ -61,7 +61,7 @@ class GupshupPartnerApiClient {
   */
   getAllSubscriptions = async () => {
     const url = `/subscription`;
-    return await this.axios.get(url);
+    return this.axios.get(url);
   };
 
   /**
@@ -69,7 +69,7 @@ class GupshupPartnerApiClient {
   */
   getSubscription = async (subscriptionId: string) => {
     const url = `/subscription/${subscriptionId}`;
-    return await this.axios.get(url);
+    return this.axios.get(url);
   };
 
   /**
@@ -77,7 +77,7 @@ class GupshupPartnerApiClient {
   */
   addSubscription = async (data: PartnerSubscriptionDataAdd) => {
     const url = `/subscription`;
-    return await this.axios.post(url, stringify(data));
+    return this.axios.post(url, stringify(data));
   };
 
   /**
@@ -85,7 +85,7 @@ class GupshupPartnerApiClient {
   */
   updateSubscription = async (subscriptionId: string, data: PartnerSubscriptionDataUpdate) => {
     const url = `/subscription/${subscriptionId}`;
-    return await this.axios.put(url, stringify(data));
+    return this.axios.put(url, stringify(data));
   };
 
   /**
@@ -93,7 +93,7 @@ class GupshupPartnerApiClient {
   */
   deleteSubscription = async (subscriptionId: string) => {
     const url = `/subscription/${subscriptionId}`;
-    return await this.axios.delete(url);
+    return this.axios.delete(url);
   };
 
   /**
@@ -101,7 +101,7 @@ class GupshupPartnerApiClient {
   */
   deleteAllSubscriptions = async () => {
     const url = `/subscription`;
-    return await this.axios.delete(url);
+    return this.axios.delete(url);
   };
 
   /**

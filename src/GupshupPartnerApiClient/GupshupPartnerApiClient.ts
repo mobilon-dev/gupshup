@@ -15,11 +15,12 @@ import {
 /**
  * Validates that a string value is not empty
  * @param val - The string value to validate
+ * @param fieldName - Name of the field being validated (for error message)
  * @throws {Error} When the value is empty or null
  */
-const validateNonEmpty = (val: string): void => {
+const validateNonEmpty = (val: string, fieldName: string): void => {
   if (!val || val.trim() === '') {
-    throw new Error('Value cannot be empty');
+    throw new Error(`${fieldName} cannot be empty`);
   }
 };
 
@@ -40,7 +41,7 @@ const validateNonEmpty = (val: string): void => {
  * const templates = await client.getTemplates();
  * ```
  */
-class GupshupPartnerApiClient {
+export class GupshupPartnerApiClient {
   private readonly portalUrl: string = 'https://partner.gupshup.io';
   private readonly appId: string;
   private readonly appToken: string;
@@ -51,22 +52,22 @@ class GupshupPartnerApiClient {
    * @param config - Configuration object containing app credentials and options
    * @throws {Error} When appId or appToken are empty
    */
-  constructor({ appId, appToken, debug }: GupshupPartnerApiClientConfig) {
-    this.appId = appId;
-    this.appToken = appToken;
+  constructor(config: GupshupPartnerApiClientConfig) {
+    this.appId = config.appId;
+    this.appToken = config.appToken;
 
-    validateNonEmpty(this.appId);
-    validateNonEmpty(this.appToken);
+    validateNonEmpty(this.appId, 'appId');
+    validateNonEmpty(this.appToken, 'appToken');
 
     this.axios = axios.create({
-      baseURL: `${this.portalUrl}/partner/app/${appId}/`,
+      baseURL: `${this.portalUrl}/partner/app/${this.appId}/`,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        token: appToken,
+        token: this.appToken,
       },
     });
 
-    if (debug) {
+    if (config.debug) {
       const loggerConfig = {
         prefixText: 'GupshupPartnerApiClient',
         headers: false,
@@ -397,5 +398,3 @@ class GupshupPartnerApiClient {
     }
   }
 }
-
-export { GupshupPartnerApiClient };

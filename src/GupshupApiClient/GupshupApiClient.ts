@@ -24,6 +24,43 @@ import type {
   BusinessProfileDetails,
   AnyObject,
   UploadableFile,
+  // Response types
+  GetTemplatesListResponse,
+  GetTemplateByIdResponse,
+  GetSubscriptionResponse,
+  AddSubscriptionResponse,
+  UpdateSubscriptionResponse,
+  DeleteSubscriptionResponse,
+  DeleteAllSubscriptionsResponse,
+  MarkUserOptInResponse,
+  GetOptInUsersListResponse,
+  GetBusinessDetailsResponse,
+  GetBusinessProfileAboutResponse,
+  UpdateBusinessProfileAboutResponse,
+  GetBusinessProfileDetailsResponse,
+  UpdateBusinessProfileDetailsResponse,
+  GetBusinessProfilePhotoResponse,
+  UpdateBusinessProfilePhotoResponse,
+  MarkReadResponse,
+  SetReadStatusResponse,
+  GetReadStatusResponse,
+  SendMediaImageMessageResponse,
+  SendMediaVideoMessageResponse,
+  SendMediaAudioMessageResponse,
+  SendMediaFileMessageResponse,
+  SendMediaStickerMessageResponse,
+  SendTextMessageResponse,
+  SendLocationResponse,
+  SendContactCardResponse,
+  SendListMessageResponse,
+  SendQuickReplyResponse,
+  SendTemplateTextMessageResponse,
+  SendTemplateImageMessageResponse,
+  SendTemplateVideoMessageResponse,
+  SendTemplateDocumentMessageResponse,
+  SendTemplateLocationMessageResponse,
+  GetListBlockedUsersResponse,
+  BlockUserResponse,
 } from './types';
 
 
@@ -101,9 +138,9 @@ export class GupshupAPIClient {
   /**
   * Получить список шаблонов
   * @group Template
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetTemplatesListResponse>} Ответ axios
   */
-  getTemplatesList = async () => {
+  getTemplatesList = async (): Promise<GetTemplatesListResponse> => {
     const url = `/wa/app/${this.APP_ID}/template`;
     return this.axios.get(url);
   };
@@ -112,9 +149,9 @@ export class GupshupAPIClient {
   * Получить шаблон по ID
   * @group Template
   * @param {string} templateId - ID шаблона
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetTemplateByIdResponse>} Ответ axios
   */
-  getTemplateById = async (templateId: string) => {
+  getTemplateById = async (templateId: string): Promise<GetTemplateByIdResponse> => {
     const url = `/wa/app/${this.APP_ID}/template/${templateId}`;
     return this.axios.get(url);
   };
@@ -123,9 +160,9 @@ export class GupshupAPIClient {
   * Получить подписку по ID
   * @group Subscription
   * @param {string} subscriptionId - ID подписки
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetSubscriptionResponse>} Ответ axios
   */
-  getSubscription = async (subscriptionId: string) => {
+  getSubscription = async (subscriptionId: string): Promise<GetSubscriptionResponse> => {
     const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
     return this.axios.get(url);
   };
@@ -134,9 +171,9 @@ export class GupshupAPIClient {
   * Добавить подписку
   * @group Subscription
   * @param {SubscriptionDataAdd} data - Данные подписки
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<AddSubscriptionResponse>} Ответ axios
   */
-  addSubscription = async (data: SubscriptionDataAdd) => {
+  addSubscription = async (data: SubscriptionDataAdd): Promise<AddSubscriptionResponse> => {
     const url = `/wa/app/${this.APP_ID}/subscription`;
     return this.axios.post(url, stringify(data));
   };
@@ -146,9 +183,9 @@ export class GupshupAPIClient {
   * @group Subscription
   * @param {string} subscriptionId - ID подписки
   * @param {SubscriptionDataUpdate} data - Новые данные
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<UpdateSubscriptionResponse>} Ответ axios
   */
-  updateSubscription = async (subscriptionId: string, data: SubscriptionDataUpdate) => {
+  updateSubscription = async (subscriptionId: string, data: SubscriptionDataUpdate): Promise<UpdateSubscriptionResponse> => {
     const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
     return this.axios.put(url, stringify(data));
   };
@@ -157,9 +194,9 @@ export class GupshupAPIClient {
   * Удалить подписку
   * @group Subscription
   * @param {string} subscriptionId - ID подписки
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<DeleteSubscriptionResponse>} Ответ axios
   */
-  deleteSubscription = async (subscriptionId: string) => {
+  deleteSubscription = async (subscriptionId: string): Promise<DeleteSubscriptionResponse> => {
     const url = `/wa/app/${this.APP_ID}/subscription/${subscriptionId}`;
     return this.axios.delete(url);
   };
@@ -167,9 +204,9 @@ export class GupshupAPIClient {
   /**
   * Удалить все подписки
   * @group Subscription
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<DeleteAllSubscriptionsResponse>} Ответ axios
   */
-  deleteAllSubscriptions = async () => {
+  deleteAllSubscriptions = async (): Promise<DeleteAllSubscriptionsResponse> => {
     const url = `/wa/app/${this.APP_ID}/subscription`;
     return this.axios.delete(url);
   };
@@ -179,9 +216,9 @@ export class GupshupAPIClient {
   * @group Opt In
   * @deprecated
   * @param {string} userMobileNumber - Номер пользователя
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<MarkUserOptInResponse>} Ответ axios
   */
-  markUserOptIn = async (userMobileNumber: string) => {
+  markUserOptIn = async (userMobileNumber: string): Promise<MarkUserOptInResponse> => {
     const params = this.getUrlEncodedData({
       user: userMobileNumber
     });
@@ -194,9 +231,9 @@ export class GupshupAPIClient {
   * Получить список opt-in пользователей (устарело)
   * @group Opt In
   * @deprecated
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetOptInUsersListResponse>} Ответ axios
   */
-  getOptInUsersList = async () => {
+  getOptInUsersList = async (): Promise<GetOptInUsersListResponse> => {
     const url = `/sm/api/v1/users/${this.APP_NAME}`;
     return this.axios.get(url);
   }
@@ -204,9 +241,9 @@ export class GupshupAPIClient {
   /**
   * Получить бизнес-детали
   * @group Bussiness Profile
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetBusinessDetailsResponse>} Ответ axios
   */
-  getBusinessDetails = async () => {
+  getBusinessDetails = async (): Promise<GetBusinessDetailsResponse> => {
     const url = `/wa/app/${this.APP_ID}/business`;
     return this.axios.get(url);
   }  
@@ -214,9 +251,9 @@ export class GupshupAPIClient {
   /**
   * Получить about бизнес-профиля
   * @group Bussiness Profile
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetBusinessProfileAboutResponse>} Ответ axios
   */
-  getBusinessProfileAbout = async () => {
+  getBusinessProfileAbout = async (): Promise<GetBusinessProfileAboutResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile/about`;
     return this.axios.get(url);
   }
@@ -225,9 +262,9 @@ export class GupshupAPIClient {
   * Обновить about бизнес-профиля
   * @group Bussiness Profile
   * @param {string} about - Новый about
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<UpdateBusinessProfileAboutResponse>} Ответ axios
   */
-  updateBusinessProfileAbout = async (about: string) => {
+  updateBusinessProfileAbout = async (about: string): Promise<UpdateBusinessProfileAboutResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile/about`;
     const data = this.getUrlEncodedData({about});
     return this.axios.put(url, data);
@@ -236,9 +273,9 @@ export class GupshupAPIClient {
   /**
   * Получить детали бизнес-профиля
   * @group Bussiness Profile
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetBusinessProfileDetailsResponse>} Ответ axios
   */
-  getBusinessProfileDetails = async () => {
+  getBusinessProfileDetails = async (): Promise<GetBusinessProfileDetailsResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile`;
     return this.axios.get(url);
   }
@@ -247,9 +284,9 @@ export class GupshupAPIClient {
   * Обновить детали бизнес-профиля
   * @group Bussiness Profile
   * @param {BusinessProfileDetails} data - Новые детали
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<UpdateBusinessProfileDetailsResponse>} Ответ axios
   */
-  updateBusinessProfileDetails = async (data: BusinessProfileDetails) => {
+  updateBusinessProfileDetails = async (data: BusinessProfileDetails): Promise<UpdateBusinessProfileDetailsResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile`;
     return this.axios.put(url, data);
   }
@@ -257,9 +294,9 @@ export class GupshupAPIClient {
   /**
   * Получить фото бизнес-профиля
   * @group Bussiness Profile
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetBusinessProfilePhotoResponse>} Ответ axios
   */
-  getBusinessProfilePhoto = async () => {
+  getBusinessProfilePhoto = async (): Promise<GetBusinessProfilePhotoResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile/photo`;
     return this.axios.get(url);
   }
@@ -268,9 +305,9 @@ export class GupshupAPIClient {
   * Обновить фото бизнес-профиля
   * @group Bussiness Profile
   * @param {UploadableFile} file - Файл изображения
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<UpdateBusinessProfilePhotoResponse>} Ответ axios
   */
-  updateBusinessProfilePhoto = async (file: UploadableFile) => {
+  updateBusinessProfilePhoto = async (file: UploadableFile): Promise<UpdateBusinessProfilePhotoResponse> => {
     const url = `/wa/app/${this.APP_ID}/business/profile/photo`;
     const form = new FormData();
     form.append('image', file);
@@ -288,9 +325,9 @@ export class GupshupAPIClient {
   * Пометить сообщение как прочитанное
   * @group Message Read Status
   * @param {string} msgid - ID сообщения
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<MarkReadResponse>} Ответ axios
   */
-  markRead = async (msgid: string) => {
+  markRead = async (msgid: string): Promise<MarkReadResponse> => {
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}/read`;
     // вернет пустую data
     return this.axios.put(url, null, {
@@ -304,9 +341,9 @@ export class GupshupAPIClient {
   * Альяс для markRead
   * @group Message Read Status
   * @param {string} msgid - ID сообщения
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<SetReadStatusResponse>} Ответ axios
   */
-  setReadStatus = async(msgid: string) => {
+  setReadStatus = async(msgid: string): Promise<SetReadStatusResponse> => {
     return this.markRead(msgid);
   }
 
@@ -314,9 +351,9 @@ export class GupshupAPIClient {
   * Получить статус прочтения сообщения
   * @group Message Read Status
   * @param {string} msgid - ID сообщения
-  * @returns {Promise<any>} Ответ axios
+  * @returns {Promise<GetReadStatusResponse>} Ответ axios
   */
-  getReadStatus = async (msgid: string) => {
+  getReadStatus = async (msgid: string): Promise<GetReadStatusResponse> => {
     const url = `/wa/app/${this.APP_ID}/msg/${msgid}`;    
     return this.axios.get(url, {
       headers: {
@@ -391,7 +428,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaImageMessage = async (userMobileNumber: string, imageUrl: string, caption: string) => {
+  sendMediaImageMessage = async (userMobileNumber: string, imageUrl: string, caption: string): Promise<SendMediaImageMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -411,7 +448,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaVideoMessage = async (userMobileNumber: string, videoUrl: string, caption: string) => {
+  sendMediaVideoMessage = async (userMobileNumber: string, videoUrl: string, caption: string): Promise<SendMediaVideoMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -430,7 +467,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string, caption: string) => {
+  sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string, caption: string): Promise<SendMediaAudioMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -449,7 +486,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string, caption: string | null) => {
+  sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string, caption: string | null): Promise<SendMediaFileMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -469,7 +506,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendMediaStickerMessage = async (userMobileNumber: string, stickerUrl: string) => {
+  sendMediaStickerMessage = async (userMobileNumber: string, stickerUrl: string): Promise<SendMediaStickerMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -487,7 +524,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendTextMessage = async (userMobileNumber: string, message: string) => {
+  sendTextMessage = async (userMobileNumber: string, message: string): Promise<SendTextMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -512,7 +549,7 @@ export class GupshupAPIClient {
     latitude: string,
     name: string,
     address: string
-  ) => {
+  ): Promise<SendLocationResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -533,7 +570,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendContactCard = async (userMobileNumber: string, contact: ContactCard) => {
+  sendContactCard = async (userMobileNumber: string, contact: ContactCard): Promise<SendContactCardResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -551,7 +588,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendListMessage = async (userMobileNumber: string, message: ListMessage) => {
+  sendListMessage = async (userMobileNumber: string, message: ListMessage): Promise<SendListMessageResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -573,7 +610,7 @@ export class GupshupAPIClient {
   /**
   * @group Session Message
   */
-  sendQuickReply = async (userMobileNumber: string, message: QuickReplyMessage) => {
+  sendQuickReply = async (userMobileNumber: string, message: QuickReplyMessage): Promise<SendQuickReplyResponse> => {
     const params = this.getUrlEncodedData({
       channel: 'whatsapp',
       source: this.SOURCE_MOBILE_NUMBER,
@@ -595,7 +632,7 @@ export class GupshupAPIClient {
   */
   sendTemplateTextMessage = async (
     userMobileNumber: string, templateId: string, templateParams: string[],
-    ) => {
+    ): Promise<SendTemplateTextMessageResponse> => {
     const params = this.getUrlEncodedData({
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
@@ -616,7 +653,7 @@ export class GupshupAPIClient {
     templateId: string,
     templateParams: string[],
     imageUrl: string,
-    ) => {
+    ): Promise<SendTemplateImageMessageResponse> => {
     const params = this.getUrlEncodedData({
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
@@ -643,7 +680,7 @@ export class GupshupAPIClient {
     templateId: string,
     templateParams: string[],
     videoUrl: string,
-    ) => {
+    ): Promise<SendTemplateVideoMessageResponse> => {
     const params = this.getUrlEncodedData({
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
@@ -671,7 +708,7 @@ export class GupshupAPIClient {
     templateParams: string[],
     documentUrl: string,
     filename: string,
-    ) => {
+    ): Promise<SendTemplateDocumentMessageResponse> => {
     const params = this.getUrlEncodedData({
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
@@ -700,7 +737,7 @@ export class GupshupAPIClient {
     templateParams: string[],
     longitude: string,
     latitude: string,
-    ) => {
+    ): Promise<SendTemplateLocationMessageResponse> => {
     const params = this.getUrlEncodedData({
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
@@ -760,9 +797,9 @@ export class GupshupAPIClient {
    * @group Users
    * @param {number} [limit] - Лимит
    * @param {number} [after] - Смещение
-   * @returns {Promise<any>} Ответ axios
+   * @returns {Promise<GetListBlockedUsersResponse>} Ответ axios
    */
-  getListBlockedUsers = async (limit?: number, after?: number) => {
+  getListBlockedUsers = async (limit?: number, after?: number): Promise<GetListBlockedUsersResponse> => {
     const url = `/wa/app/${this.APP_ID}/user/blocklist`;
     return this.axios.get(url);
   }
@@ -770,9 +807,9 @@ export class GupshupAPIClient {
   /**
    * Заблокировать пользователя
    * @param {string} number - Номер пользователя
-   * @returns {Promise<any>} Ответ axios
+   * @returns {Promise<BlockUserResponse>} Ответ axios
    */
-  blockUser = async (number: string) => {
+  blockUser = async (number: string): Promise<BlockUserResponse> => {
     const url = `/wa/app/${this.APP_ID}/user/block`;
     const data = {
       messaging_product: "whatsapp",

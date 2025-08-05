@@ -1,6 +1,6 @@
 export * from './TemplateCreateData';
 export * from './Template';
-export * from './GupshupPartnerApiClinetConfig';
+export * from './GupshupPartnerApiClientConfig';
 
 // Re-export specific types for better organization
 export { TemplateEditData, TemplateCreateDataButtons } from './TemplateCreateData';

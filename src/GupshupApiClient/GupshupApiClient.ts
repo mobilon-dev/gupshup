@@ -325,14 +325,14 @@ export class GupshupAPIClient {
    * Загрузить медиа файл
    * @group Media
    * @param {UploadableFile} file - Файл для загрузки
-   * @param {string} fileType - Тип файла (audio, image, video, file, sticker)
+   * @param {string} mimeType - Тип файла (audio, image, video, file, sticker)
    * @returns {Promise<any>} Ответ axios с информацией о загруженном файле
    */
-  uploadMedia = async (file: UploadableFile, fileType: string) => {
+  uploadMedia = async (file: UploadableFile, mimeType: string) => {
     const url = `/wa/${this.APP_ID}/wa/media/`;
     const form = new FormData();
     form.append('file', file);
-    form.append('file_type', fileType);
+    form.append('file_type', mimeType);
     const request_config = {
       headers: {
         'accept': 'application/json',

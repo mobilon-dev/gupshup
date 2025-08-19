@@ -321,6 +321,21 @@ export class GupshupAPIClient {
     return this.axios.put(url, form, request_config);
   }
 
+  uploadMedia = async (file: any, fileType: string) => {
+    const url = `/wa/${this.APP_ID}/wa/media/`;
+    const form = new FormData();
+    form.append('file', file);
+    form.append('file_type', fileType);
+    const request_config = {
+      headers: {
+        'accept': 'application/json',
+        ...form.getHeaders(),
+      },
+    };
+
+    return this.axios.post(url, form, request_config);
+  }
+
   /**
   * Пометить сообщение как прочитанное
   * @group Message Read Status

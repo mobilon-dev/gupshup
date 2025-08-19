@@ -321,7 +321,14 @@ export class GupshupAPIClient {
     return this.axios.put(url, form, request_config);
   }
 
-  uploadMedia = async (file: any, fileType: string) => {
+  /**
+   * Загрузить медиа файл
+   * @group Media
+   * @param {UploadableFile} file - Файл для загрузки
+   * @param {string} fileType - Тип файла (audio, image, video, file, sticker)
+   * @returns {Promise<any>} Ответ axios с информацией о загруженном файле
+   */
+  uploadMedia = async (file: UploadableFile, fileType: string) => {
     const url = `/wa/${this.APP_ID}/wa/media/`;
     const form = new FormData();
     form.append('file', file);

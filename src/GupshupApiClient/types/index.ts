@@ -125,5 +125,95 @@ export type AnyObject = Record<string, unknown>;
 
 export type UploadableFile = Buffer | Blob | NodeJS.ReadableStream;
 
+/**
+ * Тип для текстового сообщения
+ */
+export interface TextMessage {
+  type: 'text';
+  text: string;
+}
+
+/**
+ * Тип для видео сообщения
+ */
+export interface VideoMessage {
+  type: 'video';
+  url: string;
+  caption?: string;
+  id?: string;
+}
+
+/**
+ * Тип для аудио сообщения
+ */
+export interface AudioMessage {
+  type: 'audio';
+  url: string;
+  id?: string;
+}
+
+/**
+ * Тип для файлового сообщения
+ */
+export interface FileMessage {
+  type: 'file';
+  url: string;
+  filename: string;
+  caption?: string;
+  id?: string;
+}
+
+/**
+ * Тип для изображения сообщения
+ */
+export interface ImageMessage {
+  type: 'image';
+  originalUrl: string;
+  previewUrl: string;
+  caption?: string;
+  id?: string;
+}
+
+/**
+ * Параметры для создания видео сообщения
+ */
+export interface CreateVideoMessageParams {
+  url: string;
+  caption?: string;
+  mediaId?: string;
+}
+
+/**
+ * Параметры для создания аудио сообщения
+ */
+export interface CreateAudioMessageParams {
+  url: string;
+  mediaId?: string;
+}
+
+/**
+ * Параметры для создания файлового сообщения
+ */
+export interface CreateFileMessageParams {
+  url: string;
+  filename: string;
+  caption?: string;
+  mediaId?: string;
+}
+
+/**
+ * Параметры для создания изображения сообщения
+ */
+export interface CreateImageMessageParams {
+  url: string;
+  caption?: string;
+  mediaId?: string;
+}
+
+/**
+ * Общий тип для всех типов сообщений
+ */
+export type Message = TextMessage | VideoMessage | AudioMessage | FileMessage | ImageMessage;
+
 // Re-export response types
 export * from './responses';

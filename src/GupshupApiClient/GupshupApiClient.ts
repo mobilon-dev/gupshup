@@ -24,6 +24,16 @@ import type {
   BusinessProfileDetails,
   AnyObject,
   UploadableFile,
+  TextMessage,
+  VideoMessage,
+  AudioMessage,
+  FileMessage,
+  ImageMessage,
+  CreateVideoMessageParams,
+  CreateAudioMessageParams,
+  CreateFileMessageParams,
+  CreateImageMessageParams,
+  Message,
   // Response types
   GetTemplatesListResponse,
   GetTemplateByIdResponse,
@@ -468,7 +478,82 @@ export class GupshupAPIClient {
   };
 
   /**
+   * Создает объект текстового сообщения
+   * @group Message Creation
+   * @param {string} message - Параметры для создания текстового сообщения
+   * @returns {TextMessage} Объект текстового сообщения
+   */
+  createTextMessage = (message: string): TextMessage => {
+    return {
+      type: 'text',
+      text: message,
+    };
+  }
+
+  /**
+   * Создает объект видео сообщения
+   * @group Message Creation
+   * @param {CreateVideoMessageParams} params - Параметры для создания видео сообщения
+   * @returns {VideoMessage} Объект видео сообщения
+   */
+  createVideoMessage = (params: CreateVideoMessageParams): VideoMessage => {
+    return {
+      type: 'video',
+      url: params.url,
+      caption: params.caption,
+      id: params.mediaId,
+    };
+  }
+
+  /**
+   * Создает объект аудио сообщения
+   * @group Message Creation
+   * @param {CreateAudioMessageParams} params - Параметры для создания аудио сообщения
+   * @returns {AudioMessage} Объект аудио сообщения
+   */
+  createAudioMessage = (params: CreateAudioMessageParams): AudioMessage => {
+    return {
+      type: 'audio',
+      url: params.url,
+      id: params.mediaId,
+    };
+  }
+
+  /**
+   * Создает объект файлового сообщения
+   * @group Message Creation
+   * @param {CreateFileMessageParams} params - Параметры для создания файлового сообщения
+   * @returns {FileMessage} Объект файлового сообщения
+   */
+  createFileMessage = (params: CreateFileMessageParams): FileMessage => {
+    return {
+      type: 'file',
+      url: params.url,
+      filename: params.filename,
+      caption: params.caption,
+      id: params.mediaId,
+    };
+  } 
+
+  /**
+   * Создает объект изображения сообщения
+   * @group Message Creation
+   * @param {CreateImageMessageParams} params - Параметры для создания изображения сообщения
+   * @returns {ImageMessage} Объект изображения сообщения
+   */
+  createImageMessage = (params: CreateImageMessageParams): ImageMessage => {  
+    return {
+      type: 'image',
+      originalUrl: params.url,
+      previewUrl: params.url,
+      caption: params.caption,
+      id: params.mediaId,
+    };
+  }
+
+  /**
   * @group Session Message
+  * @deprecated Use createVideoMessage instead
   */
   sendMediaVideoMessage = async (userMobileNumber: string, videoUrl: string, caption: string): Promise<SendMediaVideoMessageResponse> => {
     const params = this.getUrlEncodedData({
@@ -486,8 +571,33 @@ export class GupshupAPIClient {
     return this.axios.post(SEND_TEXT_MESSAGE_URL, params);
   };
 
+
+  /**
+   * Отправить сообщение в сессии (универсальный метод)
+   * @group Session Message
+   * @param {string} userMobileNumber - Номер пользователя
+   * @param {Message} message - Объект сообщения
+   * @returns {Promise<SendTextMessageResponse>} Ответ axios
+   */
+  sendSessionMessage = async (
+    userMobileNumber: string, 
+    message: Message
+  ): Promise<SendTextMessageResponse> => {
+    const params = this.getUrlEncodedData({
+      channel: 'whatsapp',
+      source: this.SOURCE_MOBILE_NUMBER,
+      destination: userMobileNumber,
+      message,
+      'src.name': this.APP_NAME
+    });
+    if (this.debug) console.log('params', params);
+    return this.axios.post(SEND_TEXT_MESSAGE_URL, params);
+  };
+
+
   /**
   * @group Session Message
+  * @deprecated Use sendSessionMessage instead
   */
   sendMediaAudioMessage = async (userMobileNumber: string, audioUrl: string, caption: string): Promise<SendMediaAudioMessageResponse> => {
     const params = this.getUrlEncodedData({
@@ -507,6 +617,7 @@ export class GupshupAPIClient {
 
   /**
   * @group Session Message
+  * @deprecated Use sendSessionMessage instead
   */
   sendMediaFileMessage = async (userMobileNumber: string, fileUrl: string, filename: string, caption: string | null): Promise<SendMediaFileMessageResponse> => {
     const params = this.getUrlEncodedData({
@@ -545,6 +656,7 @@ export class GupshupAPIClient {
 
   /**
   * @group Session Message
+  * @deprecated Use createTextMessage instead
   */
   sendTextMessage = async (userMobileNumber: string, message: string): Promise<SendTextMessageResponse> => {
     const params = this.getUrlEncodedData({

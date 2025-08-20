@@ -34,6 +34,15 @@ import type {
   CreateFileMessageParams,
   CreateImageMessageParams,
   Message,
+  TemplateImageMessage,
+  TemplateDocumentMessage,
+  TemplateAudioMessage,
+  TemplateVideoMessage,
+  TemplateMessage,
+  TemplateImageMessageParams,
+  TemplateDocumentMessageParams,
+  TemplateAudioMessageParams,
+  TemplateVideoMessageParams,
   // Response types
   GetTemplatesListResponse,
   GetTemplateByIdResponse,
@@ -69,6 +78,7 @@ import type {
   SendTemplateVideoMessageResponse,
   SendTemplateDocumentMessageResponse,
   SendTemplateLocationMessageResponse,
+  SendTemplateMessageResponse,
   GetListBlockedUsersResponse,
   BlockUserResponse,
 } from './types';
@@ -478,10 +488,15 @@ export class GupshupAPIClient {
   };
 
   /**
-   * Создает объект текстового сообщения
+   * Создает объект текстового сообщения для сессионной отправки
    * @group Message Creation
-   * @param {string} message - Параметры для создания текстового сообщения
+   * @param {string} message - Текст сообщения
    * @returns {TextMessage} Объект текстового сообщения
+   * @example
+   * ```typescript
+   * const textMessage = client.createTextMessage('Привет! Как дела?');
+   * await client.sendSessionMessage('1234567890', textMessage);
+   * ```
    */
   createTextMessage = (message: string): TextMessage => {
     return {
@@ -491,10 +506,22 @@ export class GupshupAPIClient {
   }
 
   /**
-   * Создает объект видео сообщения
+   * Создает объект видео сообщения для сессионной отправки
    * @group Message Creation
    * @param {CreateVideoMessageParams} params - Параметры для создания видео сообщения
+   * @param {string} params.url - URL видео файла
+   * @param {string} [params.caption] - Подпись к видео
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
    * @returns {VideoMessage} Объект видео сообщения
+   * @example
+   * ```typescript
+   * const videoMessage = client.createVideoMessage({
+   *   url: 'https://example.com/video.mp4',
+   *   caption: 'Посмотри это видео!',
+   *   mediaId: 'video_123'
+   * });
+   * await client.sendSessionMessage('1234567890', videoMessage);
+   * ```
    */
   createVideoMessage = (params: CreateVideoMessageParams): VideoMessage => {
     return {
@@ -506,10 +533,20 @@ export class GupshupAPIClient {
   }
 
   /**
-   * Создает объект аудио сообщения
+   * Создает объект аудио сообщения для сессионной отправки
    * @group Message Creation
    * @param {CreateAudioMessageParams} params - Параметры для создания аудио сообщения
+   * @param {string} params.url - URL аудио файла
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
    * @returns {AudioMessage} Объект аудио сообщения
+   * @example
+   * ```typescript
+   * const audioMessage = client.createAudioMessage({
+   *   url: 'https://example.com/audio.mp3',
+   *   mediaId: 'audio_123'
+   * });
+   * await client.sendSessionMessage('1234567890', audioMessage);
+   * ```
    */
   createAudioMessage = (params: CreateAudioMessageParams): AudioMessage => {
     return {
@@ -520,10 +557,24 @@ export class GupshupAPIClient {
   }
 
   /**
-   * Создает объект файлового сообщения
+   * Создает объект файлового сообщения для сессионной отправки
    * @group Message Creation
    * @param {CreateFileMessageParams} params - Параметры для создания файлового сообщения
+   * @param {string} params.url - URL файла
+   * @param {string} params.filename - Имя файла
+   * @param {string} [params.caption] - Подпись к файлу
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
    * @returns {FileMessage} Объект файлового сообщения
+   * @example
+   * ```typescript
+   * const fileMessage = client.createFileMessage({
+   *   url: 'https://example.com/document.pdf',
+   *   filename: 'важный_документ.pdf',
+   *   caption: 'Документ для ознакомления',
+   *   mediaId: 'file_123'
+   * });
+   * await client.sendSessionMessage('1234567890', fileMessage);
+   * ```
    */
   createFileMessage = (params: CreateFileMessageParams): FileMessage => {
     return {
@@ -536,10 +587,22 @@ export class GupshupAPIClient {
   } 
 
   /**
-   * Создает объект изображения сообщения
+   * Создает объект изображения сообщения для сессионной отправки
    * @group Message Creation
    * @param {CreateImageMessageParams} params - Параметры для создания изображения сообщения
+   * @param {string} params.url - URL изображения
+   * @param {string} [params.caption] - Подпись к изображению
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
    * @returns {ImageMessage} Объект изображения сообщения
+   * @example
+   * ```typescript
+   * const imageMessage = client.createImageMessage({
+   *   url: 'https://example.com/photo.jpg',
+   *   caption: 'Красивое фото!',
+   *   mediaId: 'image_123'
+   * });
+   * await client.sendSessionMessage('1234567890', imageMessage);
+   * ```
    */
   createImageMessage = (params: CreateImageMessageParams): ImageMessage => {  
     return {
@@ -573,11 +636,31 @@ export class GupshupAPIClient {
 
 
   /**
-   * Отправить сообщение в сессии (универсальный метод)
+   * Отправляет сообщение в сессии (универсальный метод для всех типов сообщений)
    * @group Session Message
-   * @param {string} userMobileNumber - Номер пользователя
-   * @param {Message} message - Объект сообщения
-   * @returns {Promise<SendTextMessageResponse>} Ответ axios
+   * @param {string} userMobileNumber - Номер пользователя в международном формате
+   * @param {Message} message - Объект сообщения (текст, видео, аудио, файл или изображение)
+   * @returns {Promise<SendTextMessageResponse>} Ответ axios с информацией о статусе отправки
+   * @example
+   * ```typescript
+   * // Отправка текстового сообщения
+   * const textMessage = client.createTextMessage('Привет!');
+   * await client.sendSessionMessage('1234567890', textMessage);
+   * 
+   * // Отправка изображения
+   * const imageMessage = client.createImageMessage({
+   *   url: 'https://example.com/photo.jpg',
+   *   caption: 'Красивое фото!'
+   * });
+   * await client.sendSessionMessage('1234567890', imageMessage);
+   * 
+   * // Отправка видео
+   * const videoMessage = client.createVideoMessage({
+   *   url: 'https://example.com/video.mp4',
+   *   caption: 'Интересное видео'
+   * });
+   * await client.sendSessionMessage('1234567890', videoMessage);
+   * ```
    */
   sendSessionMessage = async (
     userMobileNumber: string, 
@@ -762,7 +845,153 @@ export class GupshupAPIClient {
   };
 
   /**
+   * Создает объект шаблонного изображения сообщения
+   * @group Template Message Creation
+   * @param {TemplateImageMessageParams} params - Параметры для создания шаблонного изображения сообщения
+   * @param {string} params.url - URL изображения
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
+   * @returns {TemplateImageMessage} Объект шаблонного изображения сообщения
+   * @example
+   * ```typescript
+   * const templateImage = client.createTemplateImageMessage({
+   *   url: 'https://example.com/image.jpg',
+   *   mediaId: 'image_123'
+   * });
+   * ```
+   */
+  createTemplateImageMessage = (params: TemplateImageMessageParams): TemplateImageMessage => {
+    return {
+      type: 'image',
+      image: {
+        link: params.url,
+        id: params.mediaId,
+      },
+    };
+  }
+
+  /**
+   * Создает объект шаблонного документа сообщения
+   * @group Template Message Creation
+   * @param {TemplateDocumentMessageParams} params - Параметры для создания шаблонного документа сообщения
+   * @param {string} params.url - URL документа
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
+   * @returns {TemplateDocumentMessage} Объект шаблонного документа сообщения
+   * @example
+   * ```typescript
+   * const templateDocument = client.createTemplateDocumentMessage({
+   *   url: 'https://example.com/document.pdf',
+   *   mediaId: 'doc_123'
+   * });
+   * ```
+   */
+  createTemplateDocumentMessage = (params: TemplateDocumentMessageParams): TemplateDocumentMessage => {
+    return {
+      type: 'document',
+      document: {
+        link: params.url,
+        id: params.mediaId,
+      },
+    };
+  }
+
+  /**
+   * Создает объект шаблонного аудио сообщения
+   * @group Template Message Creation
+   * @param {TemplateAudioMessageParams} params - Параметры для создания шаблонного аудио сообщения
+   * @param {string} params.url - URL аудио файла
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
+   * @returns {TemplateAudioMessage} Объект шаблонного аудио сообщения
+   * @example
+   * ```typescript
+   * const templateAudio = client.createTemplateAudioMessage({
+   *   url: 'https://example.com/audio.mp3',
+   *   mediaId: 'audio_123'
+   * });
+   * ```
+   */
+  createTemplateAudioMessage = (params: TemplateAudioMessageParams): TemplateAudioMessage => {
+    return {
+      type: 'audio',
+      audio: {
+        link: params.url,
+        id: params.mediaId,
+      },
+    };
+  }
+
+  /**
+   * Создает объект шаблонного видео сообщения
+   * @group Template Message Creation
+   * @param {TemplateVideoMessageParams} params - Параметры для создания шаблонного видео сообщения
+   * @param {string} params.url - URL видео файла
+   * @param {string} [params.mediaId] - ID медиа файла в Gupshup
+   * @returns {TemplateVideoMessage} Объект шаблонного видео сообщения
+   * @example
+   * ```typescript
+   * const templateVideo = client.createTemplateVideoMessage({
+   *   url: 'https://example.com/video.mp4',
+   *   mediaId: 'video_123'
+   * });
+   * ```
+   */
+  createTemplateVideoMessage = (params: TemplateVideoMessageParams): TemplateVideoMessage => {
+    return {
+      type: 'video',
+      video: {
+        link: params.url,
+        id: params.mediaId,
+      },
+    };
+  }
+
+  /**
+   * Отправляет шаблонное сообщение (универсальный метод)
+   * @group Template Message
+   * @param {string} userMobileNumber - Номер пользователя
+   * @param {string} templateId - ID шаблона в Gupshup
+   * @param {string[]} templateParams - Параметры для подстановки в шаблон
+   * @param {TemplateMessage | null} message - Объект медиа сообщения или null для текстового шаблона
+   * @returns {Promise<SendTemplateMessageResponse>} Ответ axios
+   * @example
+   * ```typescript
+   * // Отправка шаблона с изображением
+   * const templateImage = client.createTemplateImageMessage({
+   *   url: 'https://example.com/image.jpg'
+   * });
+   * 
+   * await client.sendTemplateMessage(
+   *   '1234567890',
+   *   'template_id_123',
+   *   ['John', 'Doe'],
+   *   templateImage
+   * );
+   * 
+   * // Отправка текстового шаблона
+   * await client.sendTemplateMessage(
+   *   '1234567890',
+   *   'text_template_id',
+   *   ['param1', 'param2'],
+   *   null
+   * );
+   * ```
+   */
+  sendTemplateMessage = async (userMobileNumber: string, templateId: string, templateParams: string[], message: TemplateMessage | null): Promise<SendTemplateMessageResponse> => {
+    const params = this.getUrlEncodedData({
+      source: this.SOURCE_MOBILE_NUMBER,
+      destination: userMobileNumber,
+      template: {
+        id: templateId,
+        params: templateParams,
+      },
+      message,
+    });
+    if (this.debug) console.log('params', params);
+    return this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
+  }
+
+  /**
   * @group Template Message
+  * @deprecated Use sendTemplateMessage instead
   */
   sendTemplateTextMessage = async (
     userMobileNumber: string, templateId: string, templateParams: string[],
@@ -781,6 +1010,7 @@ export class GupshupAPIClient {
 
   /**
   * @group Template Message
+  * @deprecated Use sendTemplateMessage instead
   */
   sendTemplateImageMessage = async (
     userMobileNumber: string,

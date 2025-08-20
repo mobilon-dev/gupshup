@@ -165,5 +165,10 @@ export type SendTemplateImageMessageResponse = ApiResponse<MessageResponse>;
 export type SendTemplateVideoMessageResponse = ApiResponse<MessageResponse>;
 export type SendTemplateDocumentMessageResponse = ApiResponse<MessageResponse>;
 export type SendTemplateLocationMessageResponse = ApiResponse<MessageResponse>;
+
+/**
+ * Общий тип для ответов шаблонных сообщений
+ */
+export type SendTemplateMessageResponse = ApiResponse<MessageResponse>;
 export type GetListBlockedUsersResponse = ApiResponse<BlockedUsersResponse>;
 export type BlockUserResponse = ApiResponse<BlockUserData>; 

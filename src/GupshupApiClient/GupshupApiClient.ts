@@ -975,16 +975,18 @@ export class GupshupAPIClient {
    * );
    * ```
    */
-  sendTemplateMessage = async (userMobileNumber: string, templateId: string, templateParams: string[], message: TemplateMessage | null): Promise<SendTemplateMessageResponse> => {
-    const params = this.getUrlEncodedData({
+  sendTemplateMessage = async (userMobileNumber: string, templateId: string, templateParams: string[] | null, message: TemplateMessage | null): Promise<SendTemplateMessageResponse> => {
+    let data : any;
+    data = {
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
       template: {
         id: templateId,
-        params: templateParams,
       },
-      message,
-    });
+    };
+    if (templateParams) data.template.params = templateParams;
+    if(message) data['message'] = message;
+    const params = this.getUrlEncodedData(data);
     if (this.debug) console.log('params', params);
     return this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
   }

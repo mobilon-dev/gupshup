@@ -27,6 +27,7 @@
     "build": "tsc && npm run docs:build",
     "lint-fix": "eslint --fix . --ext .ts",
     "docs:build": "npx typedoc",
-    "docs:view": "http-server ./docs/"
+    "docs:view": "http-server ./docs/",
+    "test:workflow": "./scripts/test-workflow.sh"
   }
 }

@@ -156,6 +156,31 @@ export class GupshupAPIClient {
   };
 
   /**
+   * Получает имя файла из UploadableFile
+   * @param {UploadableFile} file - Файл для получения имени
+   * @returns {string} Имя файла или описание типа
+   */
+  private getFileName = (file: UploadableFile): string => {
+    if (Buffer.isBuffer(file)) {
+      return `Buffer(${file.length} bytes)`;
+    }
+    
+    if (file instanceof Blob) {
+      return `Blob(${file.size} bytes, ${file.type})`;
+    }
+    
+    // NodeJS.ReadableStream
+    if (typeof file === 'object' && file !== null && 'path' in file) {
+      const stream = file as any;
+      if (stream.path) {
+        return stream.path.split('/').pop() || 'Unknown file';
+      }
+    }
+    
+    return 'Unknown file type';
+  };
+
+  /**
   * Получить список шаблонов
   * @group Template
   * @returns {Promise<GetTemplatesListResponse>} Ответ axios
@@ -353,14 +378,31 @@ export class GupshupAPIClient {
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', mimeType);
-    const request_config = {
-      headers: {
-        'accept': 'application/json',
-        ...form.getHeaders(),
-      },
-    };
 
-    return this.axios.post(url, form, request_config);
+    // Создаем отдельный axios instance без логирования для uploadMedia
+    const uploadAxios = axios.create({
+      baseURL: 'https://api.gupshup.io',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'accept': 'application/json',
+        apiKey: this.API_KEY,
+        ...form.getHeaders(), // Добавляем заголовки FormData (включая правильный Content-Type)
+      },
+    });
+
+    // Добавляем кастомное логирование только для uploadMedia
+    if (this.debug) {
+      uploadAxios.interceptors.request.use((request) => {
+        console.log(`[GupshupApiClient][Request] ${request.method?.toUpperCase()} ${request.url} | File type: ${mimeType} | File: ${this.getFileName(file)}`);
+        return request;
+      });
+      uploadAxios.interceptors.response.use((response) => {
+        console.log(`[GupshupApiClient][Response] ${response.config.method?.toUpperCase()} ${response.config.url} ${response.status}`, response.data);
+        return response;
+      });
+    }
+
+    return uploadAxios.post(url, form);
   }
 
   /**

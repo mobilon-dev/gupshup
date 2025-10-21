@@ -12,11 +12,18 @@ const start = async () => {
   });
 
   const file = fs.createReadStream(path.join(__dirname, '../../media/logo.jpg'));
-  const data = await client.generateMediaIdUsingUpload(file, 'image/jpeg');
+
+  /*
+  const data = await client.uploadMediaForHandleId(file, 'image/jpeg');
   console.log('data', data);
+  */
+
+  const data2 = await client.uploadMediaForHandleId(file, 'image/jpeg', 'logo2.jpg');
+  console.log('data2', data2);
 }
 
 (start)()
+
 
 /*
 

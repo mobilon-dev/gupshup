@@ -307,6 +307,8 @@ export class GupshupPartnerApiClient {
 
   /**
    * Uploads a file and generates a media ID
+   * @deprecated
+   * @link uploadMedia
    * @param file - The file to upload
    * @param fileType - The type of the file
    * @returns Promise resolving to media ID and upload result
@@ -323,6 +325,50 @@ export class GupshupPartnerApiClient {
     };
 
     const response = await this.axios.post('/media', form, requestConfig);
+    return response.data;
+  }
+
+  /**
+   * Uploads a file and receives a media ID
+   * @param file - The file to upload
+   * @param fileType - The type of the file
+   * @returns Promise resolving to media ID and upload result
+   */
+  async uploadMedia(file: any, fileType: string): Promise<any> {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('file_type', fileType);
+    
+    const requestConfig = {
+      headers: {
+        ...form.getHeaders(),
+      },
+    };
+
+    const response = await this.axios.post('/media', form, requestConfig);
+    return response.data;
+  }
+
+  /**
+   * Uploads media file and get handleId
+   * @param file - The file to upload
+   * @param mimeType - mime type, example video/mp4
+   * @param filename - example, 'image.jpeg'
+   * @returns Promise resolving to media ID and upload result
+   */
+  async uploadMediaForHandleId(file: any, mimeType: string, filename?: string): Promise<any> {
+    const form = new FormData();
+    const params = filename ? {filename} : null;
+    form.append('file', file, params);
+    form.append('file_type', mimeType);
+    
+    const requestConfig = {
+      headers: {
+        ...form.getHeaders(),
+      },
+    };
+
+    const response = await this.axios.post('/upload/media', form, requestConfig);
     return response.data;
   }
 

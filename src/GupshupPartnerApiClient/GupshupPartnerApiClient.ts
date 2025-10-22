@@ -119,8 +119,9 @@ export class GupshupPartnerApiClient {
    * @returns Configured axios instance
    */
   private createMediaUploadAxios(fileInfo: string): AxiosInstance {
+    const baseURL = `${this.portalUrl}/partner/app/${this.appId}/`;
     const uploadAxios = axios.create({
-      baseURL: `${this.portalUrl}/partner/app/${this.appId}/`,
+      baseURL,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         token: this.appToken,
@@ -129,12 +130,14 @@ export class GupshupPartnerApiClient {
 
     if (this.debug) {
       uploadAxios.interceptors.request.use((request) => {
-        console.log(`[GupshupPartnerApiClient][Request] ${request.method?.toUpperCase()} ${request.url} | ${fileInfo}`);
+        const fullUrl = `${baseURL}${request.url}`.replace(/([^:]\/)\/+/g, "$1");
+        console.log(`[GupshupPartnerApiClient][Request] ${request.method?.toUpperCase()} ${fullUrl} | ${fileInfo}`);
         return request;
       });
       
       uploadAxios.interceptors.response.use((response) => {
-        console.log(`[GupshupPartnerApiClient][Response] ${response.config.method?.toUpperCase()} ${response.config.url} ${response.status}`, response.data);
+        const fullUrl = `${baseURL}${response.config.url}`.replace(/([^:]\/)\/+/g, "$1");
+        console.log(`[GupshupPartnerApiClient][Response] ${response.config.method?.toUpperCase()} ${fullUrl} ${response.status}`, response.data);
         return response;
       });
     }

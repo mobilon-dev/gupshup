@@ -375,13 +375,14 @@ export class GupshupAPIClient {
    */
   uploadMedia = async (file: UploadableFile, mimeType: string) => {
     const url = `/wa/${this.APP_ID}/wa/media/`;
+    const baseURL = 'https://api.gupshup.io';
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', mimeType);
 
     // Создаем отдельный axios instance без логирования для uploadMedia
     const uploadAxios = axios.create({
-      baseURL: 'https://api.gupshup.io',
+      baseURL,
       headers: {
         'Cache-Control': 'no-cache',
         'accept': 'application/json',
@@ -393,11 +394,13 @@ export class GupshupAPIClient {
     // Добавляем кастомное логирование только для uploadMedia
     if (this.debug) {
       uploadAxios.interceptors.request.use((request) => {
-        console.log(`[GupshupApiClient][Request] ${request.method?.toUpperCase()} ${request.url} | File type: ${mimeType} | File: ${this.getFileName(file)}`);
+        const fullUrl = `${baseURL}${request.url}`.replace(/([^:]\/)\/+/g, "$1");
+        console.log(`[GupshupApiClient][Request] ${request.method?.toUpperCase()} ${fullUrl} | File type: ${mimeType} | File: ${this.getFileName(file)}`);
         return request;
       });
       uploadAxios.interceptors.response.use((response) => {
-        console.log(`[GupshupApiClient][Response] ${response.config.method?.toUpperCase()} ${response.config.url} ${response.status}`, response.data);
+        const fullUrl = `${baseURL}${response.config.url}`.replace(/([^:]\/)\/+/g, "$1");
+        console.log(`[GupshupApiClient][Response] ${response.config.method?.toUpperCase()} ${fullUrl} ${response.status}`, response.data);
         return response;
       });
     }

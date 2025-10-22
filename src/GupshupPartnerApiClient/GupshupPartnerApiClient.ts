@@ -46,6 +46,7 @@ export class GupshupPartnerApiClient {
   private readonly appId: string;
   private readonly appToken: string;
   private readonly axios: AxiosInstance;
+  private readonly debug: boolean;
 
   /**
    * Creates a new GupshupPartnerApiClient instance
@@ -55,6 +56,7 @@ export class GupshupPartnerApiClient {
   constructor(config: GupshupPartnerApiClientConfig) {
     this.appId = config.appId;
     this.appToken = config.appToken;
+    this.debug = config.debug || false;
 
     validateNonEmpty(this.appId, 'appId');
     validateNonEmpty(this.appToken, 'appToken');
@@ -67,7 +69,7 @@ export class GupshupPartnerApiClient {
       },
     });
 
-    if (config.debug) {
+    if (this.debug) {
       const loggerConfig = {
         prefixText: 'GupshupPartnerApiClient',
         headers: false,
@@ -82,6 +84,62 @@ export class GupshupPartnerApiClient {
         responseLogger(response, loggerConfig)
       );
     }
+  }
+
+  // ==================== HELPER METHODS ====================
+
+  /**
+   * Extracts file name or description from various file types
+   * @param file - The file to get name from
+   * @returns File name or description
+   */
+  private getFileName(file: any): string {
+    if (Buffer.isBuffer(file)) {
+      return `Buffer(${file.length} bytes)`;
+    }
+    
+    if (file instanceof Blob) {
+      return `Blob(${file.size} bytes, ${file.type})`;
+    }
+    
+    // NodeJS.ReadableStream
+    if (typeof file === 'object' && file !== null && 'path' in file) {
+      const stream = file as any;
+      if (stream.path) {
+        return stream.path.split('/').pop() || 'Unknown file';
+      }
+    }
+    
+    return 'Unknown file type';
+  }
+
+  /**
+   * Creates an axios instance with custom logging for media uploads
+   * @param fileInfo - Information about the file being uploaded
+   * @returns Configured axios instance
+   */
+  private createMediaUploadAxios(fileInfo: string): AxiosInstance {
+    const uploadAxios = axios.create({
+      baseURL: `${this.portalUrl}/partner/app/${this.appId}/`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        token: this.appToken,
+      },
+    });
+
+    if (this.debug) {
+      uploadAxios.interceptors.request.use((request) => {
+        console.log(`[GupshupPartnerApiClient][Request] ${request.method?.toUpperCase()} ${request.url} | ${fileInfo}`);
+        return request;
+      });
+      
+      uploadAxios.interceptors.response.use((response) => {
+        console.log(`[GupshupPartnerApiClient][Response] ${response.config.method?.toUpperCase()} ${response.config.url} ${response.status}`, response.data);
+        return response;
+      });
+    }
+
+    return uploadAxios;
   }
 
   // ==================== SUBSCRIPTION METHODS ====================
@@ -317,14 +375,16 @@ export class GupshupPartnerApiClient {
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', fileType);
-    
-    const requestConfig = {
+
+    const fileName = this.getFileName(file);
+    const fileInfo = `File type: ${fileType} | File: ${fileName}`;
+    const uploadAxios = this.createMediaUploadAxios(fileInfo);
+
+    const response = await uploadAxios.post('/media', form, {
       headers: {
         ...form.getHeaders(),
       },
-    };
-
-    const response = await this.axios.post('/media', form, requestConfig);
+    });
     return response.data;
   }
 
@@ -338,14 +398,16 @@ export class GupshupPartnerApiClient {
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', fileType);
-    
-    const requestConfig = {
+
+    const fileName = this.getFileName(file);
+    const fileInfo = `File type: ${fileType} | File: ${fileName}`;
+    const uploadAxios = this.createMediaUploadAxios(fileInfo);
+
+    const response = await uploadAxios.post('/media', form, {
       headers: {
         ...form.getHeaders(),
       },
-    };
-
-    const response = await this.axios.post('/media', form, requestConfig);
+    });
     return response.data;
   }
 
@@ -361,14 +423,16 @@ export class GupshupPartnerApiClient {
     const params = filename ? {filename} : null;
     form.append('file', file, params);
     form.append('file_type', mimeType);
-    
-    const requestConfig = {
+
+    const fileName = filename || this.getFileName(file);
+    const fileInfo = `Mime type: ${mimeType} | File: ${fileName}`;
+    const uploadAxios = this.createMediaUploadAxios(fileInfo);
+
+    const response = await uploadAxios.post('/upload/media', form, {
       headers: {
         ...form.getHeaders(),
       },
-    };
-
-    const response = await this.axios.post('/upload/media', form, requestConfig);
+    });
     return response.data;
   }
 

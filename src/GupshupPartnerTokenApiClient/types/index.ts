@@ -19,7 +19,7 @@ export interface AppAccessTokenResponse {
   /** The access token for the app */
   token: string;
   /** Additional response data */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -27,9 +27,9 @@ export interface AppAccessTokenResponse {
  */
 export interface PartnerAppsResponse {
   /** Array of partner apps */
-  apps: any[];
+  apps: unknown[];
   /** Additional response data */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -39,7 +39,7 @@ export interface AppCreationResponse {
   /** The created app ID */
   appId: string;
   /** Additional response data */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -49,5 +49,5 @@ export interface AuthLinkResponse {
   /** The authentication link */
   link: string;
   /** Additional response data */
-  [key: string]: any;
+  [key: string]: unknown;
 }

@@ -128,7 +128,7 @@ export interface MediaValidationResult {
 }
 
 // Generic API response wrapper
-export type ApiResponse<T = any> = AxiosResponse<T>;
+export type ApiResponse<T = unknown> = AxiosResponse<T>;
 
 // Specific response types for each method
 export type GetTemplatesListResponse = ApiResponse<TemplatesListResponse>;

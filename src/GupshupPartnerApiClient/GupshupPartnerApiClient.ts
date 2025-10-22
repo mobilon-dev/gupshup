@@ -93,7 +93,7 @@ export class GupshupPartnerApiClient {
    * @param file - The file to get name from
    * @returns File name or description
    */
-  private getFileName(file: any): string {
+  private getFileName(file: unknown): string {
     if (Buffer.isBuffer(file)) {
       return `Buffer(${file.length} bytes)`;
     }
@@ -104,7 +104,7 @@ export class GupshupPartnerApiClient {
     
     // NodeJS.ReadableStream
     if (typeof file === 'object' && file !== null && 'path' in file) {
-      const stream = file as any;
+      const stream = file as { path?: string };
       if (stream.path) {
         return stream.path.split('/').pop() || 'Unknown file';
       }
@@ -216,7 +216,7 @@ export class GupshupPartnerApiClient {
    * @param templateData - Template creation data
    * @returns Promise resolving to created template data
    */
-  async postTemplate(templateData: TemplateCreateData): Promise<any> {
+  async postTemplate(templateData: TemplateCreateData): Promise<unknown> {
     const response = await this.axios.post('/templates', stringify(templateData));
     return response.data;
   }
@@ -227,7 +227,7 @@ export class GupshupPartnerApiClient {
    * @param templateData - Updated template data
    * @returns Promise resolving to updated template data
    */
-  async editTemplate(templateId: string, templateData: TemplateEditData): Promise<any> {
+  async editTemplate(templateId: string, templateData: TemplateEditData): Promise<unknown> {
     const response = await this.axios.put(`/templates/${templateId}`, stringify(templateData));
     return response.data;
   }
@@ -237,7 +237,7 @@ export class GupshupPartnerApiClient {
    * @param elementName - The element name of the template to delete
    * @returns Promise resolving to deletion result
    */
-  async delTemplate(elementName: string): Promise<any> {
+  async delTemplate(elementName: string): Promise<unknown> {
     const response = await this.axios.delete(`/template/${elementName}`);
     return response.data;
   }
@@ -249,7 +249,7 @@ export class GupshupPartnerApiClient {
    * @param callbackUrl - The URL to receive webhook notifications
    * @returns Promise resolving to callback URL setting result
    */
-  async putCallBackUrl(callbackUrl: string): Promise<any> {
+  async putCallBackUrl(callbackUrl: string): Promise<unknown> {
     const response = await this.axios.put('/callbackUrl', stringify({ callbackUrl }));
     return response.data;
   }
@@ -259,7 +259,7 @@ export class GupshupPartnerApiClient {
    * @param phone - The phone number to opt-in
    * @returns Promise resolving to opt-in result
    */
-  async addOptIn(phone: string): Promise<any> {
+  async addOptIn(phone: string): Promise<unknown> {
     const response = await this.axios.put('/optin', stringify({ phone }));
     return response.data;
   }
@@ -269,7 +269,7 @@ export class GupshupPartnerApiClient {
    * @param phone - The phone number to check
    * @returns Promise resolving to user status
    */
-  async getUserStatus(phone: string): Promise<any> {
+  async getUserStatus(phone: string): Promise<{ status: string }> {
     const response = await this.axios.get('/userStatus', {
       params: { phone },
     });
@@ -296,7 +296,7 @@ export class GupshupPartnerApiClient {
    * Gets the wallet balance
    * @returns Promise resolving to wallet balance data
    */
-  async getWalletBalance(): Promise<any> {
+  async getWalletBalance(): Promise<unknown> {
     const response = await this.axios.get('/wallet/balance');
     return response.data;
   }
@@ -305,7 +305,7 @@ export class GupshupPartnerApiClient {
    * Checks the health status of the API
    * @returns Promise resolving to health status data
    */
-  async checkHealth(): Promise<any> {
+  async checkHealth(): Promise<unknown> {
     const response = await this.axios.get('/health');
     return response.data;
   }
@@ -314,7 +314,7 @@ export class GupshupPartnerApiClient {
    * Gets message limits and ratings
    * @returns Promise resolving to message limits and ratings data
    */
-  async getMessageLimit(): Promise<any> {
+  async getMessageLimit(): Promise<unknown> {
     const response = await this.axios.get('/ratings');
     return response.data;
   }
@@ -323,7 +323,7 @@ export class GupshupPartnerApiClient {
    * Gets quality rating information
    * @returns Promise resolving to quality rating data
    */
-  async getQualityRating(): Promise<any> {
+  async getQualityRating(): Promise<unknown> {
     const response = await this.axios.get('/ratings');
     return response.data;
   }
@@ -332,7 +332,7 @@ export class GupshupPartnerApiClient {
    * Gets WABA (WhatsApp Business Account) information
    * @returns Promise resolving to WABA information
    */
-  async getWABAInfo(): Promise<any> {
+  async getWABAInfo(): Promise<unknown> {
     const response = await this.axios.get('/waba/info');
     return response.data;
   }
@@ -345,7 +345,7 @@ export class GupshupPartnerApiClient {
    * @param to - End date in YYYY-MM-DD format
    * @returns Promise resolving to usage statistics
    */
-  async getUsage(from: string, to: string): Promise<any> {
+  async getUsage(from: string, to: string): Promise<unknown> {
     const response = await this.axios.get('/usage', {
       params: { from, to },
     });
@@ -357,7 +357,7 @@ export class GupshupPartnerApiClient {
    * @param templateId - The template ID to disable analytics for
    * @returns Promise resolving to analytics disable result
    */
-  async disableButtonClickAnalytics(templateId: string): Promise<any> {
+  async disableButtonClickAnalytics(templateId: string): Promise<unknown> {
     const response = await this.axios.post('/template/analytics/buttonclick', 
       stringify({ templateId, disable: true })
     );
@@ -374,7 +374,7 @@ export class GupshupPartnerApiClient {
    * @param fileType - The type of the file
    * @returns Promise resolving to media ID and upload result
    */
-  async generateMediaIdUsingUpload(file: any, fileType: string): Promise<any> {
+  async generateMediaIdUsingUpload(file: unknown, fileType: string): Promise<unknown> {
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', fileType);
@@ -397,7 +397,7 @@ export class GupshupPartnerApiClient {
    * @param fileType - The type of the file
    * @returns Promise resolving to media ID and upload result
    */
-  async uploadMedia(file: any, fileType: string): Promise<any> {
+  async uploadMedia(file: unknown, fileType: string): Promise<unknown> {
     const form = new FormData();
     form.append('file', file);
     form.append('file_type', fileType);
@@ -421,7 +421,7 @@ export class GupshupPartnerApiClient {
    * @param filename - example, 'image.jpeg'
    * @returns Promise resolving to media ID and upload result
    */
-  async uploadMediaForHandleId(file: any, mimeType: string, filename?: string): Promise<any> {
+  async uploadMediaForHandleId(file: unknown, mimeType: string, filename?: string): Promise<unknown> {
     const form = new FormData();
     const params = filename ? {filename} : null;
     form.append('file', file, params);
@@ -444,7 +444,7 @@ export class GupshupPartnerApiClient {
    * @param mediaId - The media ID to download
    * @returns Promise resolving to media data
    */
-  async downloadMedia(mediaId: string): Promise<any> {
+  async downloadMedia(mediaId: string): Promise<unknown> {
     const response = await this.axios.get(`/media/${mediaId}`);
     return response.data;
   }
@@ -457,7 +457,7 @@ export class GupshupPartnerApiClient {
    * @param month - The month (MM format)
    * @returns Promise resolving to discount data
    */
-  async getDiscount(year: string, month: string): Promise<any> {
+  async getDiscount(year: string, month: string): Promise<unknown> {
     const response = await this.axios.get('/discount', {
       params: { year, month },
     });
@@ -470,7 +470,7 @@ export class GupshupPartnerApiClient {
    * Gets business profile details
    * @returns Promise resolving to business profile data
    */
-  async getBusinessProfileDetails(): Promise<any> {
+  async getBusinessProfileDetails(): Promise<unknown> {
     const response = await this.axios.get('/business/profile');
     return response.data;
   }
@@ -479,7 +479,7 @@ export class GupshupPartnerApiClient {
    * Gets business profile about information
    * @returns Promise resolving to business profile about data
    */
-  async getBusinessProfileAbout(): Promise<any> {
+  async getBusinessProfileAbout(): Promise<unknown> {
     const response = await this.axios.get('/business/profile/about');
     return response.data;
   }
@@ -488,7 +488,7 @@ export class GupshupPartnerApiClient {
    * Gets business profile photo
    * @returns Promise resolving to business profile photo data
    */
-  async getBusinessProfilePhoto(): Promise<any> {
+  async getBusinessProfilePhoto(): Promise<unknown> {
     const response = await this.axios.get('/business/profile/photo');
     return response.data;
   }

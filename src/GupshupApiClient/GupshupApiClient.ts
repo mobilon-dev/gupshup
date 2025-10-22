@@ -171,7 +171,7 @@ export class GupshupAPIClient {
     
     // NodeJS.ReadableStream
     if (typeof file === 'object' && file !== null && 'path' in file) {
-      const stream = file as any;
+      const stream = file as { path?: string };
       if (stream.path) {
         return stream.path.split('/').pop() || 'Unknown file';
       }
@@ -1021,8 +1021,15 @@ export class GupshupAPIClient {
    * ```
    */
   sendTemplateMessage = async (userMobileNumber: string, templateId: string, templateParams: string[] | null, message: TemplateMessage | null): Promise<SendTemplateMessageResponse> => {
-    let data : any;
-    data = {
+    const data: {
+      source: string;
+      destination: string;
+      template: {
+        id: string;
+        params?: string[];
+      };
+      message?: TemplateMessage;
+    } = {
       source: this.SOURCE_MOBILE_NUMBER,
       destination: userMobileNumber,
       template: {
@@ -1030,7 +1037,7 @@ export class GupshupAPIClient {
       },
     };
     if (templateParams) data.template.params = templateParams;
-    if(message) data['message'] = message;
+    if(message) data.message = message;
     const params = this.getUrlEncodedData(data);
     if (this.debug) console.log('params', params);
     return this.axios.post(SENT_TEMPLATE_MESSAGE_URL, params);
@@ -1210,7 +1217,7 @@ export class GupshupAPIClient {
    * @param {number} [after] - Смещение
    * @returns {Promise<GetListBlockedUsersResponse>} Ответ axios
    */
-  getListBlockedUsers = async (limit?: number, after?: number): Promise<GetListBlockedUsersResponse> => {
+  getListBlockedUsers = async (): Promise<GetListBlockedUsersResponse> => {
     const url = `/wa/app/${this.APP_ID}/user/blocklist`;
     return this.axios.get(url);
   }

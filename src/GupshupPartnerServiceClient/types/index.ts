@@ -13,5 +13,5 @@ export interface PartnerTokenResponse {
   /** The authentication token */
   token: string;
   /** Additional response data */
-  [key: string]: any;
+  [key: string]: unknown;
 }
